@@ -81,7 +81,10 @@ exports.getProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body);
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: false,
+    });
     res.status(201).json({
       status: "success",
       data: {
