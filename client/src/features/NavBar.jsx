@@ -35,6 +35,7 @@ function NavBar() {
         <Link className="logo2" to={"/"}>
           ShopZone
         </Link>
+
         <div className="search-container">
           <input
             type="text"

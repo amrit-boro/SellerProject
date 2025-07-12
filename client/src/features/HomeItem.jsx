@@ -8,13 +8,21 @@ function HomeItem({ item }) {
 
   // console.log("actual data coming from the databbase: ", data);
 
-  const { name: itemName, price, description, createdAt, images, _id } = item;
+  const {
+    name: itemName,
+    price,
+    description,
+    createdAt,
+    images,
+    _id,
+    seller: sellerName,
+  } = item;
 
   function handleClick() {
     dispatch(updateSearchName(itemName));
 
     navigate(`/${_id}`, {
-      state: { itemName, images, description, createdAt, _id },
+      state: { itemName, images, description, createdAt, _id, sellerName },
     });
   }
 

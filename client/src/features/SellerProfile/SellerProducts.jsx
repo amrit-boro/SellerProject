@@ -31,13 +31,11 @@ const SellerProducts = () => {
 
 const styles = {
   gridWrapper: {
-    maxHeight: "700px", // slightly taller to show 2 full rows
-    overflowY: "auto",
     paddingRight: "5px",
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
     gap: "20px",
     padding: "10px",
   },

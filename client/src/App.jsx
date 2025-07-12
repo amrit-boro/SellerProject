@@ -14,6 +14,7 @@ import Profile from "./features/SellerProfile/Profile";
 import Borrow from "./features/Item/Borrow";
 import VisitProfile from "./features/ui/VisitProfile";
 import SellerLongin from "./features/authentication/SellerLogin";
+import EditProfile from "./features/ui/EditProfile";
 // import Search from "./features/Item/Search";
 
 const router = createBrowserRouter([
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "/sellerprofile",
     element: <Profile />,
+  },
+  {
+    path: "/sellerprofile/editsellerProfile",
+    element: <EditProfile />,
   },
   {
     path: "borrow/:id",

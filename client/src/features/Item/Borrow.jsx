@@ -7,12 +7,9 @@ function Borrow() {
     userId: "",
     email: "",
     phoneNumber: "",
-    organization: "",
     itemName: "",
     itemId: "",
-    category: "",
     borrowDate: "",
-    returnDate: "",
     purpose: "",
     agreeTerms: false,
   });
@@ -20,7 +17,7 @@ function Borrow() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const img = location.state;
+  const { images, itemName, username } = location.state;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -32,6 +29,7 @@ function Borrow() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.fullName) return;
     console.log("Borrow Request Submitted:", formData);
     // Add validation or send to server
   };
@@ -42,44 +40,65 @@ function Borrow() {
         <Link className="logo2" to={"/"} style={styles.logo}>
           ShopeZone
         </Link>
-        <div className="search-container">
-          <input type="text" />
-          <button className="search-button">🔍</button>
-        </div>
-        <div className="account2">Hello</div>
+
+        <div className="account2">Hello {username}</div>
       </header>
 
       <form style={styles.flexWrapper} onSubmit={handleSubmit}>
         {/* Left: Product Image */}
         <div style={styles.imageContainer}>
-          <img src={img} alt="Product" style={styles.productImage} />
+          <img src={images} alt="Product" style={styles.productImage} />
+          <span
+            style={{
+              backgroundColor: "rgb(245, 164, 0)",
+              padding: "10px 24px",
+              borderRadius: "6px",
+              marginTop: "14px",
+            }}
+          >
+            {itemName}
+          </span>
         </div>
 
         {/* Right: Form Fields */}
         <div style={styles.formContainer}>
           <h2 style={styles.heading}>Borrow Item Request</h2>
-
-          {[
-            { label: "Full Name", name: "fullName", type: "text" },
-            { label: "Email", name: "email", type: "email" },
-            { label: "Phone Number", name: "phoneNumber", type: "tel" },
-            { label: "Item Name", name: "itemName", type: "text" },
-            { label: "Borrow Date", name: "borrowDate", type: "date" },
-            { label: "Expected Return Date", name: "returnDate", type: "date" },
-          ].map(({ label, name, type }) => (
-            <div key={name}>
-              <label style={styles.label}>{label}</label>
-              <input
-                style={styles.input}
-                type={type}
-                name={name}
-                value={formData[name]}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          ))}
-
+          <label style={styles.label}>Full Name</label>
+          <input
+            style={styles.input}
+            type="text"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+          />
+          <label style={styles.label}>Email</label>
+          <input
+            style={styles.input}
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <label style={styles.label}>Phone Number</label>
+          <input
+            style={styles.input}
+            type="tel"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            required
+          />{" "}
+          <label style={styles.label}>Borrow Date</label>
+          <input
+            style={styles.input}
+            type="date"
+            name="borrowDate"
+            value={formData.borrowDate}
+            onChange={handleChange}
+            required
+          />{" "}
           <label style={styles.label}>Purpose of Borrowing</label>
           <textarea
             style={{ ...styles.input, resize: "vertical", height: "60px" }}
@@ -88,8 +107,8 @@ function Borrow() {
             value={formData.purpose}
             onChange={handleChange}
             placeholder="Describe purpose (optional)"
+            required
           />
-
           <div style={styles.checkboxContainer}>
             <input
               type="checkbox"
@@ -102,7 +121,6 @@ function Borrow() {
               I agree to the terms and conditions
             </label>
           </div>
-
           <div style={{ display: "flex", gap: "12px" }}>
             <button
               type="button"
@@ -151,6 +169,7 @@ const styles = {
     width: "30%",
     backgroundColor: "#f1f1f1",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     padding: "10px",

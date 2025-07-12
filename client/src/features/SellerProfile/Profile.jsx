@@ -1,9 +1,26 @@
+import { useEffect, useState } from "react";
 import SellerProducts from "./SellerProducts";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const categories = ["Electronics", "Clothing", "Home", "Toys", "Books"];
 
 const Profile = ({ seller }) => {
+  const [showEditor, setShowEditor] = useState(false);
+  const navigate = useNavigate();
+
+  const sellerName = useSelector((state) => state.seller.sellername);
+  console.log("seller name:", sellerName);
+
+  useEffect(() => {
+    if (showEditor) {
+      navigate("/sellerprofile/editsellerProfile");
+    }
+  }, [showEditor, navigate]);
+
+  const location = useLocation();
+  const { name, about } = location.state;
+
   return (
     <>
       <header className="top-bar2">
@@ -21,12 +38,12 @@ const Profile = ({ seller }) => {
         <div style={styles.sidebar}>
           <div style={styles.profileSection}>
             <div style={styles.avatar}></div>
-            <p>{seller?.name || "User Name"}</p>
-            <p>⭐ {seller?.rating || "4.5"}</p>
+            <p>{sellerName || "user name"}</p>
+            <p>About : {about}</p>
+            <p>My ratings: ⭐ {seller?.rating || "4.5"}</p>
           </div>
           <div style={styles.sidebarButtons}>
-            <button>Edit Profile</button>
-            <button>Orders</button>
+            <button onClick={() => setShowEditor(true)}>Edit Profile</button>
             <button>Add Product</button>
           </div>
         </div>
@@ -39,7 +56,17 @@ const Profile = ({ seller }) => {
                 {cat}
               </div>
             ))}
-            <div style={{ marginLeft: "auto", cursor: "pointer" }}>☰</div>
+            <div
+              style={{
+                marginLeft: "auto",
+                cursor: "pointer",
+                display: "flex",
+                gap: "2rem",
+              }}
+            >
+              <div>Orders</div>
+              <div>☰</div>
+            </div>
           </div>
 
           <div style={styles.scrollableContent}>
@@ -76,8 +103,8 @@ const styles = {
   },
   sidebarButtons: {
     display: "flex",
-    flexDirection: "column",
-    gap: "10px",
+    gap: "5px",
+    justifyContent: "center",
   },
   mainContent: {
     flex: 1,

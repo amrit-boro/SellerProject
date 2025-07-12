@@ -9,6 +9,7 @@ function ItemDetails({
   Location,
   itemName,
   _id,
+  username,
 }) {
   const navigate = useNavigate();
   const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
@@ -19,7 +20,7 @@ function ItemDetails({
     if (!isAuthenticate) {
       navigate("/login");
     } else {
-      navigate(`/borrow/${_id}`, { state: images });
+      navigate(`/borrow/${_id}`, { state: { images, itemName, username } });
     }
   }
 
@@ -45,6 +46,9 @@ function ItemDetails({
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-GB");
+
   return (
     <div style={styles.page}>
       <div style={styles.container}>
@@ -56,7 +60,7 @@ function ItemDetails({
             style={styles.image}
             onClick={handleImageClick}
           />
-
+          <p>ratings:⭐⭐⭐⭐⭐</p>
           <div style={styles.actions}>
             <button style={styles.btnCart}>Add to Cart</button>
             <button style={styles.btnBorrow} onClick={handleBorrow}>
@@ -67,7 +71,15 @@ function ItemDetails({
           <div style={styles.about}>
             <strong>About Product:</strong>
             <br />
+            {/* Description.........  */}
             {description}
+            <br />
+            <strong>Availabe:</strong>{" "}
+            <span style={{ fontWeight: "bold" }}> {formattedDate}</span> to{" "}
+            <span style={{ fontWeight: "bold" }}>27/08/2025</span>
+            <br />
+            <strong>Condition:</strong> Good
+            <br />
           </div>
         </div>
 
@@ -145,7 +157,6 @@ const styles = {
   },
 
   actions: {
-    marginTop: "16px",
     display: "flex",
     gap: "12px",
     justifyContent: "center",
@@ -171,7 +182,7 @@ const styles = {
   about: {
     marginTop: "20px",
     backgroundColor: "#f9f9f9",
-    padding: "15px 20px",
+    padding: "10px 20px",
     borderRadius: "8px",
     width: "100%",
     textAlign: "left",

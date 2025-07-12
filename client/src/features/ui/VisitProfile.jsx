@@ -9,15 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateSearchName } from "../searchSlice";
 import LogInLink from "../authentication/LogInLink";
 import { BsPersonCircle } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function VisitProfile() {
-  const [show, setShow] = useState();
-
-  function handleToggle() {
-    setShow((prev) => !prev);
-  }
-
   const products = [
     {
       id: 1,
@@ -31,42 +25,7 @@ function VisitProfile() {
       price: "₹899",
       image: "https://source.unsplash.com/200x200/?lamp",
     },
-    {
-      id: 3,
-      name: "Smart Watch",
-      price: "₹2999",
-      image: "https://source.unsplash.com/200x200/?smartwatch",
-    },
-    {
-      id: 2,
-      name: "LED Desk Lamp",
-      price: "₹899",
-      image: "https://source.unsplash.com/200x200/?lamp",
-    },
-    {
-      id: 2,
-      name: "LED Desk Lamp",
-      price: "₹899",
-      image: "https://source.unsplash.com/200x200/?lamp",
-    },
-    {
-      id: 2,
-      name: "LED Desk Lamp",
-      price: "₹899",
-      image: "https://source.unsplash.com/200x200/?lamp",
-    },
-    {
-      id: 2,
-      name: "LED Desk Lamp",
-      price: "₹899",
-      image: "https://source.unsplash.com/200x200/?lamp",
-    },
-    {
-      id: 2,
-      name: "LED Desk Lamp",
-      price: "₹899",
-      image: "https://source.unsplash.com/200x200/?lamp",
-    },
+
     {
       id: 2,
       name: "LED Desk Lamp",
@@ -112,31 +71,11 @@ function VisitProfile() {
 
     // Add more products...
   ];
-
-  const [formData, setFormData] = useState({
-    fullName: "",
-    userId: "",
-    email: "",
-    phoneNumber: "",
-    organization: "",
-    itemName: "",
-    itemId: "",
-    category: "",
-    borrowDate: "",
-    returnDate: "",
-    purpose: "",
-    agreeTerms: false,
-  });
-
+  // Login User name
   const username = useSelector((state) => state.user.username);
-  const searchname = useSelector((state) => state.search.searchName);
-  console.log(searchname);
-  const dispatch = useDispatch();
 
-  function handleSearch(e) {
-    e.preventDefault();
-    dispatch(updateSearchName(e.target.value));
-  }
+  const location = useLocation();
+  const sellerName = location.state;
 
   return (
     <>
@@ -168,7 +107,7 @@ function VisitProfile() {
               alt="Profile"
               className="visit-profile-img"
             />
-            <h2>Jane Doe</h2>
+            <h2>{sellerName}</h2>
             <p>
               I sell beautiful handmade crafts, kitchenware, and home
               accessories.
@@ -202,8 +141,8 @@ function VisitProfile() {
           <div className="visit-product-section">
             <div className="visit-section-header">Products</div>
             <div className="visit-product-grid">
-              {products.map((product) => (
-                <div className="visit-product-card" key={product.id}>
+              {products.map((product, index) => (
+                <div className="visit-product-card" key={index}>
                   <img src={product.image} alt={product.name} />
                   <h4>{product.name}</h4>
                   <p className="price">{product.price}</p>

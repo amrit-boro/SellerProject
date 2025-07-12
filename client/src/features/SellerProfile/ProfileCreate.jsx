@@ -1,11 +1,15 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { updateSellerName } from "./sellerSlice";
 
 export default function ProfileCreate() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const sellername = useSelector((state) => state.seller.sellername);
 
   const [formData, setFormData] = useState({
-    name: "amriti",
+    name: "amrit",
     email: "yahoo@com",
     mobile: "123",
     businessName: "individual",
@@ -19,6 +23,7 @@ export default function ProfileCreate() {
     categories: [],
     brand: "honda",
     agreement: false,
+    about: "",
   });
 
   const businessTypes = [
@@ -56,7 +61,8 @@ export default function ProfileCreate() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitted data:", formData);
+    dispatch(updateSellerName(formData.name));
+
     navigate("/sellerprofile", { state: formData });
     // TODO: send formData to your API
   };
@@ -70,6 +76,15 @@ export default function ProfileCreate() {
       border: "1px solid #ccc",
       borderRadius: 8,
       backgroundColor: "#e1e1eb",
+    },
+    textarea: {
+      width: "90%",
+      height: "120px",
+      padding: "10px",
+      fontSize: "16px",
+      borderRadius: "8px",
+      border: "1px solid #ccc",
+      resize: "vertical",
     },
     field: { display: "flex", flexDirection: "column", marginBottom: "1rem" },
     label: { marginBottom: "0.5rem", fontWeight: "bold" },
@@ -96,8 +111,8 @@ export default function ProfileCreate() {
           style={styles.input}
           type="text"
           name="name"
-          value={formData.name}
-          onChange={handleChange}
+          value={sellername}
+          onChange={(e) => dispatch(updateSellerName(e.target.value))}
           required
         />
       </div>
@@ -180,17 +195,6 @@ export default function ProfileCreate() {
         />
       </div>
 
-      {/* <div style={styles.field}>
-        <label style={styles.label}>GST Number</label>
-        <input
-          style={styles.input}
-          type="text"
-          name="gst"
-          value={formData.gst}
-          onChange={handleChange}
-        />
-      </div> */}
-
       <div style={styles.field}>
         <label style={styles.label}>Bank Account Holder</label>
         <input
@@ -253,6 +257,18 @@ export default function ProfileCreate() {
           name="brand"
           value={formData.brand}
           onChange={handleChange}
+        />
+      </div>
+
+      <div style={styles.field}>
+        <label style={styles.label}>About:</label>
+        <textarea
+          style={styles.textarea}
+          type="text"
+          name="about"
+          value={formData.about}
+          onChange={handleChange}
+          placeholder="Write something here..."
         />
       </div>
 
