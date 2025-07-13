@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   sellerName: "Amrit Boro",
-  sellerAbout: "I sell sports producttt",
+  sellerAbout: "write aobut what you gonna sell",
   sellerEmail: "yahoo@com",
   sellerPhone: "9123432455",
   sellerAddress: "Guwahati",

@@ -12,6 +12,8 @@ function Profilee() {
   // const { data: items, isLoading } = useItems();
 
   const username = useSelector((state) => state.user.username);
+  const x = location.state;
+  console.log("values: ", x);
   const { itemName, images, sellerName, description, Location, _id } =
     location.state;
 
@@ -52,7 +54,8 @@ function Profilee() {
 
       <ItemDetails
         images={images}
-        SellerName={sellerName}
+        SellerName={sellerName?.sellerName} // Access the nested string field
+        SellerAbout={sellerName?.sellerAbout} // if you need more info
         description={description}
         Location={Location}
         itemName={itemName}
