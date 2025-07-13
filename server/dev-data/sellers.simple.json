@@ -1,0 +1,14 @@
+[
+  {
+    "sellerName": "Amrit Boro",
+    "sellerAbout": "We sell high-quality sports equipment across India.",
+    "sellerEmail": "amritboro@example.com",
+    "sellerPhone": "9876543210",
+    "sellerAddress": "Guwahati, Assam",
+    "sellerPanCard": "ABCDE1234F",
+    "sellerIFSC": "SBIN0001234",
+    "sellerAgreement": true,
+    "sellerAccountNumber": "123456789012",
+    "sellerAccountHolder": "Amrit Boro"
+  }
+]

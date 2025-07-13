@@ -10,7 +10,10 @@ exports.aliasTopProduct = (req, res, next) => {
 
 exports.getAllProduct = async (req, res) => {
   try {
-    const features = new ApiFeatures(Product.find(), req.query)
+    const features = new ApiFeatures(
+      Product.find().populate("seller"),
+      req.query
+    )
       .filter()
       .sort()
       .limitFields()

@@ -2,6 +2,8 @@
 const express = require("express");
 const userRouter = require("./router/userRouter");
 const itemRouter = require("./router/itemRouter");
+const seller = require("./router/sellerRouter");
+const real = require("./router/realRouter");
 const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
@@ -23,5 +25,7 @@ app.get("/", (req, res) => {
 });
 app.use("/user", userRouter);
 app.use("/api/v1/product", itemRouter);
+app.use("/api/v1/seller", seller);
+// app.use("/api/v1/products", real);
 
 module.exports = app;

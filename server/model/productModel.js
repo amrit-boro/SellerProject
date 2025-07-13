@@ -6,14 +6,6 @@ const productSchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, "Product name is required"],
-      maxlength: [
-        40,
-        "A product name must have less or equal then 40 character",
-      ],
-      minlength: [
-        10,
-        "A product name must have more or equal then 10 character",
-      ],
     },
     slug: String,
     description: {
@@ -37,7 +29,7 @@ const productSchema = new mongoose.Schema(
     ],
     seller: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Assuming you have a User or Seller model
+      ref: "Seller", // Assuming you have a User or Seller model
       required: true,
       unique: true,
     },
