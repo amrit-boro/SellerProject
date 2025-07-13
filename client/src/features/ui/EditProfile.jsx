@@ -1,36 +1,42 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { updateSellerName } from "../SellerProfile/sellerSlice";
-
-const initialData = {
-  phone: "9876543210",
-  location: "guwahati",
-  about: "hello, I sell sports products.",
-};
+import { Link, useNavigate } from "react-router-dom";
+import {
+  updateSellerAbout,
+  updateSellerAddress,
+  updateSellerName,
+} from "../SellerProfile/sellerSlice";
+import { useState } from "react";
 
 function EditProfile() {
-  const [sellerInfo, setSellerInfo] = useState(initialData);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // const sellerName = useSelector((state) => state.seller.sellername);
-  // console.log("serller name:", sellerName);
-  const sellername = useSelector((state) => state.seller.sellername);
-  console.log("selector: ", sellername);
+  const seller = useSelector((state) => state.seller);
+  const [formData, setFormData] = useState({
+    sellerName: seller.sellerName,
+    sellerAddress: seller.sellerAddress,
+    sellerAbout: seller.sellerAbout,
+  });
 
-  const handleChange = (e) => {
-    setSellerInfo({
-      ...sellerInfo,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleSave = (e) => {
+    e.preventDefault();
 
-  const handleSave = () => {
-    if (!sellerInfo.about || !sellername || !sellerInfo.location) {
+    if (
+      !formData.sellerName ||
+      !formData.sellerAddress ||
+      !formData.sellerAbout
+    ) {
       alert("Please fill out all required fields.");
       return;
     }
-    console.log(sellerInfo);
+    dispatch(updateSellerName(formData.sellerName));
+    dispatch(updateSellerAddress(formData.sellerAddress));
+    dispatch(updateSellerAbout(formData.sellerAbout));
+    navigate(-1);
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -44,22 +50,22 @@ function EditProfile() {
           <button className="cart-btn-1">🛒 Cart</button>
         </div>
       </header>
-      <div style={styles.container}>
+      <form style={styles.container} onSubmit={handleSave}>
         <label style={styles.label}>Name</label>
         <input
           style={styles.input}
           type="text"
-          name="name"
-          value={sellername}
-          onChange={(e) => dispatch(updateSellerName(e.target.value))}
+          name="sellerName"
+          value={formData.sellerName}
+          onChange={handleChange}
         />
 
         <label style={styles.label}>Location</label>
         <input
           style={styles.input}
           type="text"
-          name="location"
-          value={sellerInfo.location}
+          name="sellerAddress"
+          value={formData.sellerAddress}
           onChange={handleChange}
         />
 
@@ -67,16 +73,16 @@ function EditProfile() {
         <input
           style={styles.input}
           type="text"
-          name="about"
-          value={sellerInfo.about}
+          name="sellerAbout"
+          value={formData.sellerAbout}
           onChange={handleChange}
           required
         />
 
-        <button style={styles.button} onClick={handleSave}>
+        <button style={styles.button} type="submit">
           Save Info
         </button>
-      </div>
+      </form>
     </>
   );
 }

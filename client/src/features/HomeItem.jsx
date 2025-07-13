@@ -7,12 +7,10 @@ function HomeItem({ item }) {
   const dispatch = useDispatch();
 
   // console.log("actual data coming from the databbase: ", data);
-
   const {
     name: itemName,
     price,
     description,
-    createdAt,
     images,
     _id,
     seller: sellerName,
@@ -22,7 +20,7 @@ function HomeItem({ item }) {
     dispatch(updateSearchName(itemName));
 
     navigate(`/${_id}`, {
-      state: { itemName, images, description, createdAt, _id, sellerName },
+      state: { itemName, images, description, _id, sellerName },
     });
   }
 

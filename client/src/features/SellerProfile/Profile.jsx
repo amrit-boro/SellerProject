@@ -7,10 +7,8 @@ const categories = ["Electronics", "Clothing", "Home", "Toys", "Books"];
 
 const Profile = ({ seller }) => {
   const [showEditor, setShowEditor] = useState(false);
-  const navigate = useNavigate();
 
-  const sellerName = useSelector((state) => state.seller.sellername);
-  console.log("seller name:", sellerName);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (showEditor) {
@@ -18,8 +16,7 @@ const Profile = ({ seller }) => {
     }
   }, [showEditor, navigate]);
 
-  const location = useLocation();
-  const { name, about } = location.state;
+  const Seller = useSelector((state) => state.seller);
 
   return (
     <>
@@ -38,10 +35,14 @@ const Profile = ({ seller }) => {
         <div style={styles.sidebar}>
           <div style={styles.profileSection}>
             <div style={styles.avatar}></div>
-            <p>{sellerName || "user name"}</p>
-            <p>About : {about}</p>
+            {/* name..... */}
+            <p>{Seller.sellerName}</p>
+            {/* About............ */}
+            <p>About : {Seller.sellerAbout}</p>
+            {/* Ratings............. */}
             <p>My ratings: ⭐ {seller?.rating || "4.5"}</p>
           </div>
+          {/* Edit.............. */}
           <div style={styles.sidebarButtons}>
             <button onClick={() => setShowEditor(true)}>Edit Profile</button>
             <button>Add Product</button>

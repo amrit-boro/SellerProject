@@ -8,11 +8,12 @@ const ProfileCard = ({ item }) => {
     name: itemName,
     images,
     _id,
-    seller,
+    seller: sellerName,
     description,
     price,
     createdAt,
   } = item;
+  console.log("item: ", item);
 
   const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
 
@@ -22,7 +23,7 @@ const ProfileCard = ({ item }) => {
   function handleToggle() {
     // setShowBig((prev) => !prev);
     navigate(`/${_id}`, {
-      state: { itemName, images, seller, description, createdAt, _id },
+      state: { itemName, images, sellerName, description, createdAt, _id },
     });
   }
 
@@ -30,7 +31,7 @@ const ProfileCard = ({ item }) => {
     if (!isAuthenticate) {
       navigate("/login");
     } else {
-      navigate(`/borrow/${_id}`, { state: images });
+      navigate(`/borrow/${_id}`, { state: { images, itemName } });
     }
   }
 
@@ -48,7 +49,7 @@ const ProfileCard = ({ item }) => {
 
             <div className="profile-name2">
               <BsPersonCircle size={14} />
-              <span className="seller-id">{seller.slice(0, 16)}...</span>
+              <span className="seller-id">{sellerName.slice(0, 16)}...</span>
             </div>
 
             <div className="profile-items2">

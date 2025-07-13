@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ItemDetails({
   images,
@@ -20,7 +20,9 @@ function ItemDetails({
     if (!isAuthenticate) {
       navigate("/login");
     } else {
-      navigate(`/borrow/${_id}`, { state: { images, itemName, username } });
+      navigate(`/borrow/${_id}`, {
+        state: { images, itemName, username, SellerName, _id },
+      });
     }
   }
 

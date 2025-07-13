@@ -36,14 +36,11 @@ function NormalUser() {
     isError,
     error,
   } = useSeeProducts(searchname, range.min, range.max);
+
   const searchProducts = searchProductsRaw?.data?.products || [];
 
   const minOptions = ["100", "200", "350", "2000"];
   const maxOptions = ["1000", "1500", "3000", "5000"];
-
-  // function handleSearch(e) {
-  //   dispatch(updateSearchName(e.target.value));
-  // }
 
   const handleChange = (e) => {
     const { name, value } = e.target;

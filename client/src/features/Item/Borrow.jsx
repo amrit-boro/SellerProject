@@ -17,7 +17,7 @@ function Borrow() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { images, itemName, username } = location.state;
+  const { images, itemName, username, SellerName, _id } = location.state;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -33,6 +33,9 @@ function Borrow() {
     console.log("Borrow Request Submitted:", formData);
     // Add validation or send to server
   };
+  function handleToggle() {
+    navigate(`/profile/${SellerName}/${_id}`);
+  }
 
   return (
     <>
@@ -62,7 +65,32 @@ function Borrow() {
 
         {/* Right: Form Fields */}
         <div style={styles.formContainer}>
-          <h2 style={styles.heading}>Borrow Item Request</h2>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              position: "relative",
+            }}
+          >
+            <h2 style={styles.heading}>Borrow Item Request </h2>
+            <div
+              onClick={handleToggle}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                cursor: "pointer",
+              }}
+            >
+              <img
+                style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+                src="https://randomuser.me/api/portraits/women/44.jpg"
+                alt="Amrita"
+              />
+              <h3 style={styles.nameheading}>Amrit Boro</h3>
+            </div>
+          </div>
           <label style={styles.label}>Full Name</label>
           <input
             style={styles.input}
@@ -184,9 +212,13 @@ const styles = {
     padding: "20px 25px",
   },
   heading: {
-    textAlign: "center",
-    fontSize: "20px",
-    marginBottom: "16px",
+    position: "absolute",
+    left: "50%",
+    transform: "translateX(-50%)",
+  },
+  nameheading: {
+    marginLeft: "5px",
+    marginTop: "7px",
   },
   label: {
     display: "block",

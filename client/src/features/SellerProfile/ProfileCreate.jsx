@@ -6,40 +6,19 @@ import { updateSellerName } from "./sellerSlice";
 export default function ProfileCreate() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const sellername = useSelector((state) => state.seller.sellername);
-
+  const seller = useSelector((state) => state.seller); // Gives you all the seller values...
+  console.log(seller);
   const [formData, setFormData] = useState({
-    name: "amrit",
-    email: "yahoo@com",
-    mobile: "123",
-    businessName: "individual",
-    businessType: "single",
-    address: "guwahti",
-    pan: "123",
-    gst: "123",
-    accountHolder: "123",
-    accountNumber: "123",
-    ifsc: "123",
-    categories: [],
-    brand: "honda",
-    agreement: false,
-    about: "",
+    name: seller.sellerName || "",
+    email: seller.sellerEmail || "",
+    mobile: seller.sellerPhone || "",
+    address: seller.sellerAddress || "",
+    pan: seller.sellerPanCard || "",
+    accountHolder: seller.sellerAccountHolder || "", // Assuming account holder is the seller name
+    accountNumber: seller.sellerAccountNumber || "",
+    ifsc: seller.sellerIFSC || "",
+    agreement: seller.sellerAgreement || false,
   });
-
-  const businessTypes = [
-    "Individual",
-    "Sole Proprietor",
-    "Partnership",
-    "Private Ltd.",
-  ];
-  const categories = [
-    "Electronics",
-    "Clothing",
-    "Home Decor",
-    "Books",
-    "Toys",
-    "All",
-  ];
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -52,7 +31,6 @@ export default function ProfileCreate() {
         return { ...prev, categories: Array.from(updated) };
       });
     } else if (type === "checkbox") {
-      console.log(checked);
       setFormData({ ...formData, [name]: checked });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -61,45 +39,12 @@ export default function ProfileCreate() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateSellerName(formData.name));
 
-    navigate("/sellerprofile", { state: formData });
+    navigate("/sellerprofile");
     // TODO: send formData to your API
   };
 
   // Basic inline styles
-  const styles = {
-    container: {
-      maxWidth: 600,
-      margin: "1rem auto",
-      padding: "1rem",
-      border: "1px solid #ccc",
-      borderRadius: 8,
-      backgroundColor: "#e1e1eb",
-    },
-    textarea: {
-      width: "90%",
-      height: "120px",
-      padding: "10px",
-      fontSize: "16px",
-      borderRadius: "8px",
-      border: "1px solid #ccc",
-      resize: "vertical",
-    },
-    field: { display: "flex", flexDirection: "column", marginBottom: "1rem" },
-    label: { marginBottom: "0.5rem", fontWeight: "bold" },
-    input: { padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" },
-    checkboxGroup: { display: "flex", flexWrap: "wrap", gap: "0.5rem" },
-    checkboxLabel: { display: "flex", alignItems: "center", gap: "0.25rem" },
-    button: {
-      padding: "0.75rem 1.5rem",
-      border: "none",
-      borderRadius: 4,
-      backgroundColor: "#007BFF",
-      color: "#fff",
-      cursor: "pointer",
-    },
-  };
 
   return (
     <form style={styles.container} onSubmit={handleSubmit}>
@@ -111,8 +56,8 @@ export default function ProfileCreate() {
           style={styles.input}
           type="text"
           name="name"
-          value={sellername}
-          onChange={(e) => dispatch(updateSellerName(e.target.value))}
+          value={formData.name}
+          onChange={handleChange}
           required
         />
       </div>
@@ -139,36 +84,6 @@ export default function ProfileCreate() {
           onChange={handleChange}
           required
         />
-      </div>
-
-      <div style={styles.field}>
-        <label style={styles.label}>Business Name</label>
-        <input
-          style={styles.input}
-          type="text"
-          name="businessName"
-          value={formData.businessName}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div style={styles.field}>
-        <label style={styles.label}>Business Type</label>
-        <select
-          style={styles.input}
-          name="businessType"
-          value={formData.businessType}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Type</option>
-          {businessTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
       </div>
 
       <div style={styles.field}>
@@ -231,7 +146,7 @@ export default function ProfileCreate() {
         />
       </div>
 
-      <div style={styles.field}>
+      {/* <div style={styles.field}>
         <label style={styles.label}>Product Categories</label>
         <div style={styles.checkboxGroup}>
           {categories.map((cat) => (
@@ -247,9 +162,9 @@ export default function ProfileCreate() {
             </label>
           ))}
         </div>
-      </div>
+      </div> */}
 
-      <div style={styles.field}>
+      {/* <div style={styles.field}>
         <label style={styles.label}>Brand (optional)</label>
         <input
           style={styles.input}
@@ -258,19 +173,7 @@ export default function ProfileCreate() {
           value={formData.brand}
           onChange={handleChange}
         />
-      </div>
-
-      <div style={styles.field}>
-        <label style={styles.label}>About:</label>
-        <textarea
-          style={styles.textarea}
-          type="text"
-          name="about"
-          value={formData.about}
-          onChange={handleChange}
-          placeholder="Write something here..."
-        />
-      </div>
+      </div> */}
 
       <div
         style={{ ...styles.field, flexDirection: "row", alignItems: "center" }}
@@ -297,3 +200,36 @@ export default function ProfileCreate() {
     </form>
   );
 }
+
+const styles = {
+  container: {
+    maxWidth: 600,
+    margin: "1rem auto",
+    padding: "1rem",
+    border: "1px solid #ccc",
+    borderRadius: 8,
+    backgroundColor: "#e1e1eb",
+  },
+  textarea: {
+    width: "90%",
+    height: "120px",
+    padding: "10px",
+    fontSize: "16px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    resize: "vertical",
+  },
+  field: { display: "flex", flexDirection: "column", marginBottom: "1rem" },
+  label: { marginBottom: "0.5rem", fontWeight: "bold" },
+  input: { padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" },
+  checkboxGroup: { display: "flex", flexWrap: "wrap", gap: "0.5rem" },
+  checkboxLabel: { display: "flex", alignItems: "center", gap: "0.25rem" },
+  button: {
+    padding: "0.75rem 1.5rem",
+    border: "none",
+    borderRadius: 4,
+    backgroundColor: "#007BFF",
+    color: "#fff",
+    cursor: "pointer",
+  },
+};
