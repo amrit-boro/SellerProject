@@ -11,6 +11,10 @@ const sellerSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  SellerProfilePic: {
+    type: String, // store the image URL or path
+    default: "", // optional default value
+  },
   sellerEmail: {
     type: String,
     required: true,

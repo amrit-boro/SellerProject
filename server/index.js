@@ -8,6 +8,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
 const app = express();
+const getProduct = require("./router/getProduct");
 
 // Middleware
 
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use("/user", userRouter);
 app.use("/api/v1/product", itemRouter);
 app.use("/api/v1/seller", seller);
-// app.use("/api/v1/products", real);
+app.use("/api/v1/products", real);
+app.use("/api/v1/getAllproducts", getProduct);
 
 module.exports = app;

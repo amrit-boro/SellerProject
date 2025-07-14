@@ -31,7 +31,6 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Seller", // Assuming you have a User or Seller model
       required: true,
-      unique: true,
     },
     createdAt: {
       type: Date,

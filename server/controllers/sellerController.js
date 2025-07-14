@@ -52,3 +52,20 @@ exports.getSeller = async (req, res) => {
     });
   }
 };
+
+exports.updataSeller = async (req, res) => {
+  try {
+    const seller = await Seller.findByIdAndUpdate(req.params.id, req.body);
+    res.status(201).json({
+      status: "success",
+      data: {
+        seller,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error,
+    });
+  }
+};
