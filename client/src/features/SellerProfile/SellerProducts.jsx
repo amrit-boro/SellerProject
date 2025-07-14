@@ -1,11 +1,7 @@
 const products = [
   { _id: 1, name: "Badminton", price: 2000 },
   { _id: 2, name: "Samsung Galaxy a14 5g", price: 20000 },
-  { _id: 3, name: "Blutooth speaker", price: 1000 },
-  { _id: 4, name: "Tripod", price: 1000 },
-  { _id: 5, name: "Power Bank", price: 8000 },
-  { _id: 6, name: "Scissor", price: 100 },
-  { _id: 7, name: "KeyBoard", price: 1000 },
+
   { _id: 8, name: "Bag", price: 800 },
   // Add more if needed
 ];

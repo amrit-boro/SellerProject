@@ -1,29 +1,34 @@
-import { useState } from "react";
 import { BsPersonCircle } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const ProfileCard = ({ item }) => {
+  console.log("item: ", item);
   const {
     name: itemName,
     images,
     _id,
-    seller: sellerName,
+    seller: sellerProfile,
     description,
     price,
     createdAt,
   } = item;
-  console.log("item: ", item);
-
   const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
 
-  const [showBig, setShowBig] = useState(false);
   const navigate = useNavigate();
 
   function handleToggle() {
     // setShowBig((prev) => !prev);
     navigate(`/${_id}`, {
-      state: { itemName, images, sellerName, description, createdAt, _id },
+      state: {
+        itemName,
+        images,
+        sellerProfile,
+        price,
+        description,
+        createdAt,
+        _id,
+      },
     });
   }
 
@@ -34,6 +39,8 @@ const ProfileCard = ({ item }) => {
       navigate(`/borrow/${_id}`, { state: { images, itemName } });
     }
   }
+
+  const sellerName = sellerProfile.sellerName;
 
   return (
     // Inside ProfileCard Component
@@ -49,7 +56,7 @@ const ProfileCard = ({ item }) => {
 
             <div className="profile-name2">
               <BsPersonCircle size={14} />
-              <span className="seller-id">{sellerName.slice(0, 16)}...</span>
+              <span className="seller-id">{sellerName.slice(0, 16)}</span>
             </div>
 
             <div className="profile-items2">

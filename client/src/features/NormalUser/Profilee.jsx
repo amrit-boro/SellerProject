@@ -14,8 +14,16 @@ function Profilee() {
   const username = useSelector((state) => state.user.username);
   const x = location.state;
   console.log("values: ", x);
-  const { itemName, images, sellerName, description, Location, _id } =
-    location.state;
+  const {
+    itemName,
+    images,
+    sellerName,
+    price,
+    description,
+    sellerProfile,
+    Location,
+    _id,
+  } = location.state;
 
   return (
     <>
@@ -58,7 +66,9 @@ function Profilee() {
         SellerAbout={sellerName?.sellerAbout} // if you need more info
         description={description}
         Location={Location}
+        price={price}
         itemName={itemName}
+        sellerProfile={sellerProfile}
         _id={_id}
         username={username}
       />

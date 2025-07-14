@@ -21,6 +21,7 @@ function NormalUser() {
   const searchname = useSelector((state) => state.search.searchName);
 
   const query = useQuery();
+  console.log("querr:", query);
   // const searchname = query.get("name") || "";
   const priceMin = query.get("price[gte]") || "";
   const priceMax = query.get("price[lte]") || "";
@@ -38,6 +39,7 @@ function NormalUser() {
   } = useSeeProducts(searchname, range.min, range.max);
 
   const searchProducts = searchProductsRaw?.data?.products || [];
+  console.log("SearchProducts:", searchProducts);
 
   const minOptions = ["100", "200", "350", "2000"];
   const maxOptions = ["1000", "1500", "3000", "5000"];

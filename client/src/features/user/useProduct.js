@@ -1,6 +1,6 @@
 // hooks/useProducts.js
 import { useQuery } from "@tanstack/react-query";
-import { fetchProduct } from "./product";
+import { fetchAllsellerProducts, fetchProduct } from "./product";
 import { fetchSearchProducts } from "./product";
 
 // must use before
@@ -17,5 +17,12 @@ export function useSeeProducts(itemName, min, max) {
   return useQuery({
     queryKey: ["seeProduct", itemName, min, max],
     queryFn: () => fetchSearchProducts(itemName, min, max),
+  });
+}
+
+export function useGetAllsellerProducts(id) {
+  return useQuery({
+    queryKey: ["getAllsellerProduct", id],
+    queryFn: () => fetchAllsellerProducts(id),
   });
 }

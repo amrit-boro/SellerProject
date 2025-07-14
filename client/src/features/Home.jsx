@@ -7,7 +7,7 @@ function Home() {
   // const { data, isLoading } = useItems();
   const { data, isLoading, isError } = useProducts(); // coming from the real database... use this every where to access the value....
   const products = data?.data?.products || [];
-  console.log(products);
+  console.log("Products: ", products);
 
   return (
     <main className="product-grid">

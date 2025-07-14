@@ -7,20 +7,21 @@ function HomeItem({ item }) {
   const dispatch = useDispatch();
 
   // console.log("actual data coming from the databbase: ", data);
+  console.log("item:  ", item);
   const {
     name: itemName,
     price,
     description,
     images,
     _id,
-    seller: sellerName,
+    seller: sellerProfile,
   } = item;
 
   function handleClick() {
     dispatch(updateSearchName(itemName));
 
     navigate(`/${_id}`, {
-      state: { itemName, images, description, _id, sellerName },
+      state: { itemName, images, description, _id, price, sellerProfile },
     });
   }
 

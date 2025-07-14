@@ -16,8 +16,10 @@ function Borrow() {
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  const { images, itemName, username, SellerName, _id } = location.state;
+  const x = location.state;
+  console.log("values: ", x);
+  const { images, itemName, username, sellerName, sellerProfilePic, _id } =
+    location.state;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -30,11 +32,17 @@ function Borrow() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.fullName) return;
+
     console.log("Borrow Request Submitted:", formData);
     // Add validation or send to server
   };
   function handleToggle() {
-    navigate(`/profile/${SellerName}/${_id}`);
+    navigate(`/profile/${sellerName}/${_id}`, {
+      state: {
+        sellerName,
+        sellerProfilePic,
+      },
+    });
   }
 
   return (
@@ -73,6 +81,7 @@ function Borrow() {
             }}
           >
             <h2 style={styles.heading}>Borrow Item Request </h2>
+            {/* Profile image....................................................... */}
             <div
               onClick={handleToggle}
               style={{
@@ -85,10 +94,10 @@ function Borrow() {
             >
               <img
                 style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-                src="https://randomuser.me/api/portraits/women/44.jpg"
+                src={sellerProfilePic}
                 alt="Amrita"
               />
-              <h3 style={styles.nameheading}>Amrit Boro</h3>
+              <h3 style={styles.nameheading}>{sellerName}</h3>
             </div>
           </div>
           <label style={styles.label}>Full Name</label>

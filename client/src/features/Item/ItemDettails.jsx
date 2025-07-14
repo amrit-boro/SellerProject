@@ -4,10 +4,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function ItemDetails({
   images,
-  SellerName,
   description,
+  sellerProfile,
   Location,
   itemName,
+  price,
   _id,
   username,
 }) {
@@ -21,13 +22,28 @@ function ItemDetails({
       navigate("/login");
     } else {
       navigate(`/borrow/${_id}`, {
-        state: { images, itemName, username, SellerName, _id },
+        state: {
+          images,
+          itemName,
+          username,
+          sellerProfilePic,
+          sellerName,
+          _id,
+        },
       });
     }
   }
 
   function handleToggle() {
-    navigate(`/profile/${SellerName}/${_id}`, { state: SellerName });
+    navigate(`/profile/${sellerName}/${_id}`, {
+      state: {
+        sellerName,
+        sellerProfilePic,
+        sellerLocation,
+        sellerEmail,
+        sellerPhone,
+      },
+    });
   }
 
   function handleImageClick() {
@@ -50,6 +66,11 @@ function ItemDetails({
 
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-GB");
+  const sellerProfilePic = sellerProfile?.SellerProfilePic;
+  const sellerName = sellerProfile?.sellerName;
+  const sellerLocation = sellerProfile?.sellerAddress;
+  const sellerEmail = sellerProfile?.sellerEmail;
+  const sellerPhone = sellerProfile?.sellerPhone;
 
   return (
     <div style={styles.page}>
@@ -62,6 +83,20 @@ function ItemDetails({
             style={styles.image}
             onClick={handleImageClick}
           />
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <h3>{itemName}</h3>
+            <h3>
+              Rs: <span style={{ color: "green" }}>{price} $</span>
+            </h3>
+          </div>
+
           <p>ratings:⭐⭐⭐⭐⭐</p>
           <div style={styles.actions}>
             <button style={styles.btnCart}>Add to Cart</button>
@@ -90,12 +125,9 @@ function ItemDetails({
           <div style={styles.profileBtn} onClick={handleToggle}>
             Profile
           </div>
-          <img
-            src="https://randomuser.me/api/portraits/women/44.jpg"
-            alt="Seller"
-            style={styles.profileImg}
-          />
-          <h2 style={styles.name}>{SellerName}</h2>
+          <img src={sellerProfilePic} alt="Seller" style={styles.profileImg} />
+          {/* Seller Name */}
+          <h2 style={styles.name}>{sellerName}</h2>
           <p style={styles.desc}>
             I sell beautiful handmade crafts, kitchenware, and home accessories.
           </p>
@@ -104,8 +136,8 @@ function ItemDetails({
             ⭐ <span style={styles.star}>4.7</span>{" "}
             <span style={styles.reviews}>(128 reviews)</span>
           </p>
-          <p style={styles.contact}>Email: jane@example.com</p>
-          <p style={styles.contact}>Phone: +91 98765 43210</p>
+          <p style={styles.contact}>Email: {sellerProfile?.sellerEmail}</p>
+          <p style={styles.contact}>Phone: +91 {sellerProfile?.sellerPhone}</p>
         </div>
       </div>
 
@@ -124,6 +156,8 @@ function ItemDetails({
   );
 }
 
+const isMobile = window.innerWidth < 768;
+
 const styles = {
   page: {
     padding: "20px",
@@ -133,12 +167,13 @@ const styles = {
   },
   container: {
     display: "flex",
-    gap: "30px",
+    flexDirection: isMobile ? "column" : "row",
+    gap: "20px",
     backgroundColor: "white",
-    padding: "25px",
+    padding: "20px",
     borderRadius: "12px",
     boxShadow: "0 0 20px rgba(0,0,0,0.1)",
-    maxW_idth: "900px",
+    width: isMobile ? "90%" : "80%",
     margin: "0 auto",
     alignItems: "flex-start",
   },
@@ -146,22 +181,23 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    flex: "0 0 514px",
+    width: isMobile ? "100%" : "514px",
   },
   image: {
-    width: "340px",
-    height: "300px",
+    width: isMobile ? "100%" : "340px",
+    height: isMobile ? "auto" : "300px",
     borderRadius: "8px",
     objectFit: "contain",
     backgroundColor: "#eee",
     border: "1px solid #ccc",
     cursor: "pointer",
   },
-
   actions: {
     display: "flex",
     gap: "12px",
     justifyContent: "center",
+    flexWrap: "wrap",
+    marginTop: "10px",
   },
   btnCart: {
     padding: "10px 24px",
@@ -201,7 +237,7 @@ const styles = {
     borderRadius: "12px",
     position: "relative",
     textAlign: "center",
-    maxW_idth: "500px",
+    width: isMobile ? "100%" : "500px",
   },
   profileBtn: {
     position: "absolute",
@@ -215,7 +251,7 @@ const styles = {
     cursor: "pointer",
   },
   profileImg: {
-    w_idth: "80px",
+    width: "80px",
     height: "80px",
     borderRadius: "50%",
     marginTop: "10px",
@@ -272,11 +308,11 @@ const styles = {
     boxShadow: "0 0 20px rgba(0,0,0,0.4)",
     maxWidth: "90vw",
     maxHeight: "90vh",
-    overflow: "auto", // ✅ allow scroll if image is bigger
+    overflow: "auto",
   },
   modalImage: {
     maxWidth: "100%",
-    maxHeight: "80vh", // ✅ limit height to fit screen
+    maxHeight: "80vh",
     objectFit: "contain",
     borderRadius: "10px",
     display: "block",
@@ -284,8 +320,8 @@ const styles = {
   },
   closeButton: {
     position: "absolute",
-    top: "10px", // ✅ move ins_ide
-    right: "10px", // ✅ move ins_ide
+    top: "10px",
+    right: "10px",
     backgroundColor: "white",
     border: "none",
     fontSize: "20px",
