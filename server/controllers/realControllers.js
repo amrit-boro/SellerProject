@@ -16,3 +16,20 @@ exports.getReal = async (req, res) => {
     });
   }
 };
+
+exports.getRealById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    res.status(200).json({
+      status: "success",
+      data: {
+        product,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error,
+    });
+  }
+};

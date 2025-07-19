@@ -3,7 +3,7 @@ const express = require("express");
 const userRouter = require("./router/userRouter");
 const itemRouter = require("./router/itemRouter");
 const seller = require("./router/sellerRouter");
-const real = require("./router/realRouter");
+const realUser = require("./router/realRouter");
 const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
@@ -24,10 +24,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
-app.use("/user", userRouter);
-app.use("/api/v1/product", itemRouter);
-app.use("/api/v1/seller", seller);
-app.use("/api/v1/products", real);
-app.use("/api/v1/getAllproducts", getProduct);
+// app.use("/user", userRouter);
+
+app.use("/api/v1/product", itemRouter); // get all the products and only one product by Id
+app.use("/api/v1/seller", seller); // get all the sellers and only one seller by Id
+// app.use("/api/v1/products", realUser);
+app.use("/api/v1/getAllproducts", getProduct); // get all products of a seller by seller Id
+
+//
 
 module.exports = app;
