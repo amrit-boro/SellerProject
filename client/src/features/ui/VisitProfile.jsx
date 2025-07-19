@@ -7,25 +7,32 @@ import {
 import { useSelector } from "react-redux";
 import LogInLink from "../authentication/LogInLink";
 import { BsPersonCircle } from "react-icons/bs";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { useGetAllsellerProducts } from "../user/useProduct";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useGetAllsellerProducts, useProducts } from "../user/useProduct";
 import ItemSkeleton from "./ItemSkeleton";
 import { useState } from "react";
+import GetAllProducts from "./GetAllProducts";
 
 function VisitProfile() {
   // Login User name
   const { id } = useParams();
 
-  const { data, isLoading } = useGetAllsellerProducts(id);
+  const { data: getAllseeProducts, isLoading: getAllseeProducts_Loading } =
+    useGetAllsellerProducts(id);
+
+  const { data, isLoading, isError } = useProducts(); // coming from the real database... use this every where to access the value....
+  const products = data?.data?.products || [];
+
+  const all_products = products.map((item) => item);
+
   const [showImageModal, setShowImageModal] = useState(false);
 
-  const getAllsellerProducts = data?.data?.relatedProducts || [];
+  const getAllsellerProducts = getAllseeProducts?.data?.relatedProducts || [];
   console.log("all seller products: ", getAllsellerProducts);
 
   const username = useSelector((state) => state.user.username);
   const location = useLocation();
-  const x = location.state;
-  console.log("x", x);
+
   const {
     sellerName,
     sellerProfilePic,
@@ -75,8 +82,8 @@ function VisitProfile() {
             />
             <h2>{sellerName}</h2>
             <p>
-              I sell beautiful handmade crafts, kitchenware, and home
-              accessories.
+              % I sell beautiful handmade crafts, kitchenware, and home
+              accessories. %
             </p>
             <p className="visit-location">{sellerLocation}</p>
             <p className="visit-rating">
@@ -105,16 +112,15 @@ function VisitProfile() {
           <div className="visit-product-section">
             <div className="visit-section-header">Products</div>
             <div className="visit-product-grid">
-              {isLoading ? (
+              {getAllseeProducts_Loading ? (
                 <ItemSkeleton card={5} />
               ) : (
                 getAllsellerProducts.map((product) => (
-                  <div className="visit-product-card" key={product._id}>
-                    <img src={product.images} alt={product.name} />
-                    <h4>{product.name}</h4>
-                    <p className="price">{product.price}</p>
-                    <button>View Product</button>
-                  </div>
+                  <GetAllProducts
+                    product={product}
+                    all_products={all_products}
+                    key={product._id}
+                  />
                 ))
               )}
             </div>

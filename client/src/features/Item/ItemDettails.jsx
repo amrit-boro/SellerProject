@@ -28,6 +28,9 @@ function ItemDetails({
           username,
           sellerProfilePic,
           sellerName,
+          sellerPhone,
+          sellerEmail,
+          price,
           _id,
         },
       });
@@ -84,26 +87,39 @@ function ItemDetails({
             onClick={handleImageClick}
           />
 
+          {/* Item info........................................... */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "14px",
             }}
           >
-            <h3>{itemName}</h3>
-            <h3>
-              Rs: <span style={{ color: "green" }}>{price} $</span>
-            </h3>
+            <div style={{ fontSize: "2rem", fontWeight: "bold" }}>
+              {itemName}
+            </div>
+
+            <div style={{ marginTop: "8px" }}>
+              <span style={{ fontWeight: "bold" }}>Rs: </span>
+              <span
+                style={{ color: "green", fontSize: "20px", fontWeight: "bold" }}
+              >
+                {price}
+              </span>
+            </div>
+            <div style={{ marginTop: "8px", fontWeight: "bold" }}>
+              ratings: ⭐⭐⭐⭐⭐
+            </div>
+            <div style={styles.actions}>
+              <button style={styles.btnCart}>Add to Cart</button>
+              <button style={styles.btnBorrow} onClick={handleBorrow}>
+                Borrow
+              </button>
+            </div>
           </div>
 
-          <p>ratings:⭐⭐⭐⭐⭐</p>
-          <div style={styles.actions}>
-            <button style={styles.btnCart}>Add to Cart</button>
-            <button style={styles.btnBorrow} onClick={handleBorrow}>
-              Borrow
-            </button>
-          </div>
+          {/* ............................................................... */}
 
           <div style={styles.about}>
             <strong>About Product:</strong>
@@ -112,10 +128,10 @@ function ItemDetails({
             {description}
             <br />
             <strong>Availabe:</strong>{" "}
-            <span style={{ fontWeight: "bold" }}> {formattedDate}</span> to{" "}
-            <span style={{ fontWeight: "bold" }}>27/08/2025</span>
+            <span style={{ fontWeight: "bold" }}> % {formattedDate}</span> to{" "}
+            <span style={{ fontWeight: "bold" }}>27/08/2025</span> %
             <br />
-            <strong>Condition:</strong> Good
+            <strong>Condition:</strong> %GOOD%
             <br />
           </div>
         </div>
@@ -128,16 +144,19 @@ function ItemDetails({
           <img src={sellerProfilePic} alt="Seller" style={styles.profileImg} />
           {/* Seller Name */}
           <h2 style={styles.name}>{sellerName}</h2>
+
           <p style={styles.desc}>
-            I sell beautiful handmade crafts, kitchenware, and home accessories.
+            % I sell beautiful handmade crafts, kitchenware, and home
+            accessories. %
           </p>
+
           <p style={styles.location}>{Location}</p>
           <p style={styles.rating}>
             ⭐ <span style={styles.star}>4.7</span>{" "}
-            <span style={styles.reviews}>(128 reviews)</span>
+            <span style={styles.reviews}>% (128 reviews) %</span>
           </p>
-          <p style={styles.contact}>Email: {sellerProfile?.sellerEmail}</p>
-          <p style={styles.contact}>Phone: +91 {sellerProfile?.sellerPhone}</p>
+          <p style={styles.contact}>Email: {sellerEmail}</p>
+          <p style={styles.contact}>Phone: +91 {sellerPhone}</p>
         </div>
       </div>
 
@@ -197,7 +216,7 @@ const styles = {
     gap: "12px",
     justifyContent: "center",
     flexWrap: "wrap",
-    marginTop: "10px",
+    marginTop: "15px",
   },
   btnCart: {
     padding: "10px 24px",

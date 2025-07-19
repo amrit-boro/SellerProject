@@ -2,6 +2,7 @@ import { useItems } from "../hooks/useItems";
 import HomeItem from "./HomeItem";
 import ItemSkeleton from "./ui/ItemSkeleton";
 import { useProducts } from "./user/useProduct";
+import PageHelmet from "./ui/PageHelmet";
 
 function Home() {
   // const { data, isLoading } = useItems();
@@ -10,13 +11,16 @@ function Home() {
   console.log("Products: ", products);
 
   return (
-    <main className="product-grid">
-      {isLoading ? (
-        <ItemSkeleton card={9} />
-      ) : (
-        products.map((item) => <HomeItem item={item} key={item._id} />)
-      )}
-    </main>
+    <>
+      <PageHelmet title={"Home"} />
+      <main className="product-grid">
+        {isLoading ? (
+          <ItemSkeleton card={9} />
+        ) : (
+          products.map((item) => <HomeItem item={item} key={item._id} />)
+        )}
+      </main>
+    </>
   );
 }
 

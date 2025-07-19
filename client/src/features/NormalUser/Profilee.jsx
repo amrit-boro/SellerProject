@@ -4,6 +4,7 @@ import ItemDetails from "../Item/ItemDettails";
 import Navbarlist from "../Navbarlist";
 import { updateSearchName } from "../searchSlice";
 import { navlist } from "../ui/navlist";
+import PageHelmet from "../ui/PageHelmet";
 
 function Profilee() {
   const location = useLocation();
@@ -14,19 +15,12 @@ function Profilee() {
   const username = useSelector((state) => state.user.username);
   const x = location.state;
   console.log("values: ", x);
-  const {
-    itemName,
-    images,
-    sellerName,
-    price,
-    description,
-    sellerProfile,
-    Location,
-    _id,
-  } = location.state;
+  const { itemName, images, price, description, sellerProfile, Location, _id } =
+    location.state;
 
   return (
     <>
+      <PageHelmet title={itemName} />
       <header className="top-bar2">
         <Link
           className="logo2"
@@ -62,8 +56,6 @@ function Profilee() {
 
       <ItemDetails
         images={images}
-        SellerName={sellerName?.sellerName} // Access the nested string field
-        SellerAbout={sellerName?.sellerAbout} // if you need more info
         description={description}
         Location={Location}
         price={price}

@@ -16,10 +16,22 @@ function Borrow() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
   const x = location.state;
   console.log("values: ", x);
-  const { images, itemName, username, sellerName, sellerProfilePic, _id } =
-    location.state;
+
+  // lOCATION...................................................................................
+  const {
+    images,
+    itemName,
+    price,
+    username,
+    sellerName,
+    sellerProfilePic,
+    sellerPhone,
+    sellerEmail,
+    _id,
+  } = location.state;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -41,6 +53,8 @@ function Borrow() {
       state: {
         sellerName,
         sellerProfilePic,
+        sellerEmail,
+        sellerPhone,
       },
     });
   }
@@ -69,6 +83,11 @@ function Borrow() {
           >
             {itemName}
           </span>
+          <div style={{ marginTop: "10px" }}>
+            <span>
+              Rs: <span style={{ color: "green" }}>{price} ₹</span>
+            </span>
+          </div>
         </div>
 
         {/* Right: Form Fields */}

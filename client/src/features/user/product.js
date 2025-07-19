@@ -32,3 +32,10 @@ export const fetchAllsellerProducts = async (id) => {
   const data = await res.json();
   return data;
 };
+
+export const fetchSeller = async (id) => {
+  const res = await fetch(`http://localhost:3002/api/v1/seller/${id}`);
+  if (!res.ok) throw new Error("something is wrong when fetching the data ):");
+  const data = await res.json();
+  return data;
+};

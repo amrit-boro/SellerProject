@@ -1,6 +1,6 @@
 // hooks/useProducts.js
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllsellerProducts, fetchProduct } from "./product";
+import { fetchAllsellerProducts, fetchProduct, fetchSeller } from "./product";
 import { fetchSearchProducts } from "./product";
 
 // must use before
@@ -24,5 +24,13 @@ export function useGetAllsellerProducts(id) {
   return useQuery({
     queryKey: ["getAllsellerProduct", id],
     queryFn: () => fetchAllsellerProducts(id),
+  });
+}
+
+// for a single item id see the product and seller details
+export function useSeller(id) {
+  return useQuery({
+    queryKey: ["getSingleProduct", id],
+    queryFn: () => fetchSeller(id),
   });
 }

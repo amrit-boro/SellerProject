@@ -1,13 +1,13 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateSearchName } from "./searchSlice";
+import { Helmet } from "react-helmet-async";
 
 function HomeItem({ item }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // console.log("actual data coming from the databbase: ", data);
-  console.log("item:  ", item);
   const {
     name: itemName,
     price,
@@ -26,13 +26,15 @@ function HomeItem({ item }) {
   }
 
   return (
-    <div className="product-card" onClick={handleClick}>
-      <img src={images} alt={itemName} />
-      <h3>{itemName}</h3>
-      <p className="rating">{"⭐".repeat(4)}</p>
-      <p className="price">${price}</p>
-      <button className="add-btn">Add to Cart</button>
-    </div>
+    <>
+      <div className="product-card" onClick={handleClick}>
+        <img src={images} alt={itemName} />
+        <h3>{itemName}</h3>
+        <p className="rating">{"⭐".repeat(4)}</p>
+        <p className="price">${price}</p>
+        <button className="add-btn">View </button>
+      </div>
+    </>
   );
 }
 
