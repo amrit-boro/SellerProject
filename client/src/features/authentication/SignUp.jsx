@@ -12,6 +12,7 @@ function SignUp() {
   // console.log("user details: ", user);
 
   function onSubmit(data) {
+    console.log(data);
     const {
       signup_fullname,
       signup_phone_number,

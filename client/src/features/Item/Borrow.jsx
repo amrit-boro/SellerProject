@@ -75,15 +75,14 @@ function Borrow() {
           <img src={images} alt="Product" style={styles.productImage} />
           <span
             style={{
-              backgroundColor: "rgb(245, 164, 0)",
-              padding: "10px 24px",
-              borderRadius: "6px",
               marginTop: "14px",
             }}
           >
-            {itemName}
+            <h2>{itemName}</h2>
           </span>
-          <div style={{ marginTop: "10px" }}>
+          <div
+            style={{ marginTop: "3px", fontSize: "20px", fontWeight: "bold" }}
+          >
             <span>
               Rs: <span style={{ color: "green" }}>{price} ₹</span>
             </span>
