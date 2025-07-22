@@ -1,36 +1,51 @@
-// app.js
 const express = require("express");
-const userRouter = require("./router/userRouter");
-const itemRouter = require("./router/itemRouter");
-const seller = require("./router/sellerRouter");
-const realUser = require("./router/realRouter");
 const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
 const app = express();
-const getProduct = require("./router/getProduct");
+const rateLimit = require("express-rate-limit");
+
+// Routers
+const userRouter = require("./router/userRouter");
+const itemRouter = require("./router/itemRouter");
+const sellerRouter = require("./router/sellerRouter");
+const getProductRouter = require("./router/getProduct");
 
 // Middleware
-
 app.use(cors());
 app.use(express.json());
+
 app.use(morgan("dev"));
 
-// Routes
-// Serve static files from "public" folder
-app.use(express.static(path.join(__dirname, "public")));
+const limiter = rateLimit({
+  max: 3,
+  windowMs: 60 * 60 * 1000, // 1 hour
+  message: "Too many requests from this IP, please try again in an hour!",
+});
 
-// Route to send index.html
+// Serve static files
+app.use("/api", limiter);
+app.use(express.static(path.join(__dirname, "public")));
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  console.log(req.headers);
+  next();
+});
+
+// Index route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
-// app.use("/user", userRouter);
 
-app.use("/api/v1/product", itemRouter); // get all the products and only one product by Id
-app.use("/api/v1/seller", seller); // get all the sellers and only one seller by Id
-// app.use("/api/v1/products", realUser);
-app.use("/api/v1/getAllproducts", getProduct); // get all products of a seller by seller Id
+// Use all routers
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/product", itemRouter);
+app.use("/api/v1/seller", sellerRouter);
+app.use("/api/v1/getAllproducts", getProductRouter);
 
-//
+// Catch-all 404 route (keep this at the very bottom)
+// app.all("*", (req, res) => {
+//   res.status(404).json({ error: "Route not found" });
+// });
 
 module.exports = app;

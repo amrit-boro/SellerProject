@@ -18,7 +18,6 @@ exports.getAllProduct = async (req, res) => {
       .sort()
       .limitFields()
       .pagination();
-
     const products = await features.query;
 
     if (products.length === 0) {
@@ -58,7 +57,7 @@ exports.createProduct = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(404).json({
       status: "fail",
       message: error,
     });
@@ -95,7 +94,7 @@ exports.updateProduct = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(404).json({
       status: "fail",
       message: error,
     });
@@ -112,7 +111,7 @@ exports.deleteProduct = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(404).json({
       status: "fail",
       message: error,
     });

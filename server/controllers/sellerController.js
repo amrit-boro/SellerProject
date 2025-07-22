@@ -12,7 +12,7 @@ exports.getAllSeller = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(404).json({
       status: "fail",
       message: error,
     });
@@ -46,7 +46,7 @@ exports.getSeller = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(404).json({
       status: "fail",
       message: error,
     });
@@ -63,7 +63,7 @@ exports.updataSeller = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(404).json({
       status: "fail",
       message: error,
     });
