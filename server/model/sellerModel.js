@@ -58,7 +58,32 @@ const sellerSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  startLocation: {
+    type: {
+      type: String,
+      default: "Point",
+      enum: ["Point"],
+    },
+    coordinates: [Number],
+    address: String,
+    description: String,
+  },
+  locations: [
+    {
+      type: {
+        type: String,
+        default: "Point",
+        enum: ["Point"],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+      day: Number,
+    },
+  ],
 });
+
+sellerSchema.index({ startLocation: "2dsphere" });
 
 const Seller = mongoose.model("Seller", sellerSchema);
 

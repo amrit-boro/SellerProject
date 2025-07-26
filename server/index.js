@@ -4,6 +4,9 @@ const morgan = require("morgan");
 const path = require("path");
 const app = express();
 const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 
 // Routers
 const userRouter = require("./router/userRouter");
@@ -12,23 +15,29 @@ const sellerRouter = require("./router/sellerRouter");
 const getProductRouter = require("./router/getProduct");
 
 // Middleware
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// Data sanitization against NoSQL query injection
+// app.use(mongoSanitize());
+// Data sanitization against XSS attacks
+// app.use(xss());
+
 app.use(morgan("dev"));
 
-const limiter = rateLimit({
-  max: 3,
-  windowMs: 60 * 60 * 1000, // 1 hour
-  message: "Too many requests from this IP, please try again in an hour!",
-});
+// const limiter = rateLimit({
+//   max: 100,
+//   windowMs: 60 * 60 * 1000, // 1 hour
+//   message: "Too many requests from this IP, please try again in an hour!",
+// });
 
 // Serve static files
-app.use("/api", limiter);
+// app.use("/api", limiter);
 app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.headers);
+  // console.log(req.headers);
   next();
 });
 

@@ -16,19 +16,20 @@ mongoose.connect(DB).then(() => {
 
 // READ THE FILE
 
-const products = JSON.parse(
-  fs.readFileSync(`${__dirname}/items.simple.json`, "utf-8")
-);
+// const products = JSON.parse(
+//   fs.readFileSync(`${__dirname}/items.simple.json`, "utf-8")
+// );
 
 const sellers = JSON.parse(
   fs.readFileSync(`${__dirname}/sellers.simple.json`, "utf-8")
 );
+console.log(sellers);
 
 // IMPORT THE DATA INTO  DATABASE....
 
 const imporData = async () => {
   try {
-    await Product.create(products);
+    // await Product.create(products);
     await Seller.create(sellers);
     console.log("Data successfully loaded");
   } catch (err) {
@@ -38,8 +39,9 @@ const imporData = async () => {
 };
 
 const deleteProduct = async () => {
+  console.log("Deleting data...");
   try {
-    await Product.deleteMany();
+    // await Product.deleteMany();
     await Seller.deleteMany();
     console.log("Data successfully deleted");
   } catch (err) {

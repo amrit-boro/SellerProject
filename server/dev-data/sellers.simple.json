@@ -2,13 +2,171 @@
   {
     "sellerName": "Amrit Boro",
     "sellerAbout": "We sell high-quality sports equipment across India.",
+    "SellerProfilePic": "https://i.pinimg.com/1200x/60/3b/ef/603befb6686fdfacd19658a3abf40c99.jpg",
     "sellerEmail": "amritboro@example.com",
     "sellerPhone": "9876543210",
     "sellerAddress": "Guwahati, Assam",
     "sellerPanCard": "ABCDE1234F",
     "sellerIFSC": "SBIN0001234",
-    "sellerAgreement": true,
     "sellerAccountNumber": "123456789012",
-    "sellerAccountHolder": "Amrit Boro"
+    "sellerAccountHolder": "Amrit Boro",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [91.7539, 26.1445],
+      "address": "Guwahati Main Market",
+      "description": "Main warehouse location"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [91.789, 26.2006],
+        "address": "Beltola Branch",
+        "description": "Retail branch in Beltola",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [91.72, 26.1],
+        "address": "Maligaon Outlet",
+        "description": "Small outlet for local deliveries",
+        "day": 2
+      }
+    ]
+  },
+  {
+    "sellerName": "John Smith",
+    "sellerAbout": "Selling fitness accessories and wearables",
+    "SellerProfilePic": "https://i.pinimg.com/736x/1e/ed/96/1eed960b428ef48fc901c9a1f62431cc.jpg",
+    "sellerEmail": "johnsmith@example.com",
+    "sellerPhone": "9123456789",
+    "sellerAddress": "Mumbai, Maharashtra",
+    "sellerPanCard": "XYZAB9876K",
+    "sellerIFSC": "HDFC0001234",
+    "sellerAccountNumber": "987654321098",
+    "sellerAccountHolder": "John Smith",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [72.8777, 19.076],
+      "address": "Mumbai Central Market",
+      "description": "Main distribution hub"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [72.8333, 19.1667],
+        "address": "Andheri Branch",
+        "description": "High footfall retail branch",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [72.85, 19.1],
+        "address": "Bandra Outlet",
+        "description": "Local store for pickups",
+        "day": 2
+      }
+    ]
+  },
+  {
+    "sellerName": "Luku Smith",
+    "sellerAbout": "Selling fitness accessories and wearables",
+    "SellerProfilePic": "https://i.pinimg.com/736x/1f/82/20/1f8220ef5769b187ddd8d2f9ba0cc829.jpg",
+    "sellerEmail": "luku@example.com",
+    "sellerPhone": "9123456789",
+    "sellerAddress": "Mumbai, Maharashtra",
+    "sellerPanCard": "YYZAB9876K",
+    "sellerIFSC": "HDFC0001245",
+    "sellerAccountNumber": "987654321099",
+    "sellerAccountHolder": "Luku Smith",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [72.8777, 19.076],
+      "address": "Mumbai Fitness Hub",
+      "description": "Central office for wearables"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [72.805, 19.045],
+        "address": "Dadar Sports Store",
+        "description": "Popular store for gym gear",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [72.87, 19.21],
+        "address": "Kurla Outlet",
+        "description": "Local wearable distribution",
+        "day": 2
+      }
+    ]
+  },
+  {
+    "sellerName": "Ajoy Boro",
+    "sellerAbout": "We sell high-quality sports equipment across India.",
+    "SellerProfilePic": "https://i.pinimg.com/736x/27/41/d5/2741d5d7d2bc97c30dce7b2965244d1a.jpg",
+    "sellerEmail": "ajoyboro@example.com",
+    "sellerPhone": "9876543210",
+    "sellerAddress": "Guwahati, Assam",
+    "sellerPanCard": "ACCDE1234F",
+    "sellerIFSC": "SBIN0001238",
+    "sellerAccountNumber": "123456789012",
+    "sellerAccountHolder": "Ajoy Boro",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [91.7539, 26.1445],
+      "address": "Guwahati Sports Complex",
+      "description": "Warehouse for sports gear"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [91.78, 26.19],
+        "address": "Sixmile Branch",
+        "description": "Sports showroom",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [91.71, 26.12],
+        "address": "Paltan Bazaar Outlet",
+        "description": "Delivery point",
+        "day": 2
+      }
+    ]
+  },
+  {
+    "sellerName": "Partha Boro",
+    "sellerAbout": "We sell high-quality sports equipment across India.",
+    "SellerProfilePic": "https://i.pinimg.com/736x/7e/1b/58/7e1b58019482c675f8ad499cf861fce5.jpg",
+    "sellerEmail": "parthaboro@example.com",
+    "sellerPhone": "9876543211",
+    "sellerAddress": "Guwahati, Assam",
+    "sellerPanCard": "ACCDE1237F",
+    "sellerIFSC": "SBIN0001268",
+    "sellerAccountNumber": "123456789042",
+    "sellerAccountHolder": "Partha Boro",
+    "startLocation": {
+      "type": "Point",
+      "coordinates": [91.7539, 26.1445],
+      "address": "Guwahati Sports Plaza",
+      "description": "Main sports warehouse"
+    },
+    "locations": [
+      {
+        "type": "Point",
+        "coordinates": [91.8, 26.18],
+        "address": "Zoo Road Branch",
+        "description": "Popular outlet near park",
+        "day": 1
+      },
+      {
+        "type": "Point",
+        "coordinates": [91.73, 26.16],
+        "address": "Pan Bazaar Store",
+        "description": "Delivery and pickup point",
+        "day": 2
+      }
+    ]
   }
 ]

@@ -69,3 +69,45 @@ exports.updataSeller = async (req, res) => {
     });
   }
 };
+
+// "/seller-within/:distance/center/:latlng/unit/:unit"
+//  /seller-distance/233/center/26.212110, 91.684016/unit/km
+
+exports.getSellerWithin = async (req, res) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(",");
+
+  const radius = unit === "km" ? distance / 6378.1 : distance / 3958.8; // Convert distance to radians
+
+  if (!lat || !lng) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Please provide latitude and longitude in the format lat,lng",
+    });
+  }
+
+  console.log(
+    "distance: ",
+    distance,
+    "lat: ",
+    lat,
+    "lng: ",
+    lng,
+    "unit: ",
+    unit
+  );
+
+  const sellers = await Seller.find({
+    startLocation: {
+      $geoWithin: { $centerSphere: [[lng, lat], radius] },
+    },
+  });
+
+  res.status(200).json({
+    status: "success",
+    length: sellers.length,
+    data: {
+      sellers,
+    },
+  });
+};

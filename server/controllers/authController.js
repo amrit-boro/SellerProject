@@ -1,7 +1,6 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
-const { sign } = require("crypto");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -76,12 +75,15 @@ exports.login = async (req, res) => {
       message: "Incorrect email or password",
     });
   }
-
+  user.password = undefined; // Remove password from output
   // If everything is ok, send token to client
   const token = signToken(user._id);
   res.status(200).json({
     status: "success",
     token,
+    data: {
+      user,
+    },
   });
 };
 
