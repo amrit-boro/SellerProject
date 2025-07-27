@@ -11,6 +11,9 @@ router
   .route("/")
   .get(productController.getAllProduct)
   .post(productController.createProduct);
+router
+  .route("/product-within/:distance/center/:latlng/unit/:unit")
+  .get(productController.getProductsWithin);
 
 router
   .route("/:id")

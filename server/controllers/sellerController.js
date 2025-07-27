@@ -77,7 +77,20 @@ exports.getSellerWithin = async (req, res) => {
   const { distance, latlng, unit } = req.params;
   const [lat, lng] = latlng.split(",");
 
-  const radius = unit === "km" ? distance / 6378.1 : distance / 3958.8; // Convert distance to radians
+  let radius;
+
+  if (unit === "km") {
+    radius = distance / 6378.1;
+  } else if (unit === "mi") {
+    radius = distance / 3958.8;
+  } else if (unit === "m") {
+    radius = distance / 6378100; // Earth's radius in meters
+  } else {
+    return res.status(400).json({
+      status: "fail",
+      message: "Invalid unit. Allowed units are 'km', 'mi', or 'm'.",
+    });
+  }
 
   if (!lat || !lng) {
     return res.status(400).json({
