@@ -32,6 +32,17 @@ const productSchema = new mongoose.Schema(
       ref: "Seller", // Assuming you have a User or Seller model
       required: true,
     },
+    location: {
+      type: {
+        type: String,
+        default: "Point",
+        enum: ["Point"],
+      },
+      coordinates: { type: [Number], default: [0, 0] },
+
+      address: { type: String, default: "" },
+      description: { type: String, default: "" },
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -42,6 +53,8 @@ const productSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+productSchema.index({ location: "2dsphere" });
 
 productSchema.virtual("currentDate").get(function () {
   return new Date().toLocaleString();
