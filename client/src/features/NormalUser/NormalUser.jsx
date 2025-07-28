@@ -9,7 +9,7 @@ import CardSkeleton from "./CardSkeleton";
 import { useSeeProducts } from "../user/useProduct";
 import { navlist } from "../ui/navlist";
 import { useState } from "react";
-
+import HomeFiler from "../user/HomeFiler";
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -60,7 +60,7 @@ function NormalUser() {
     if (range.min) params.append("price[gte]", range.min);
     if (range.max) params.append("price[lte]", range.max);
 
-    navigate(`/search?${params.toString()}`);
+    // navigate(`/search?${params.toString()}`);
   };
 
   return (

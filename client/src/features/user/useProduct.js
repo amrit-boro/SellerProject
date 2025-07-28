@@ -1,14 +1,41 @@
 // hooks/useProducts.js
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllsellerProducts, fetchProduct, fetchSeller } from "./product";
+import {
+  fetchAllfilteredProducts,
+  fetchAllsellerProducts,
+  fetchProduct,
+  fetchSeller,
+} from "./product";
 import { fetchSearchProducts } from "./product";
 
 // must use before
 
-export function useProducts() {
+// export function useProducts() {
+//   return useQuery({
+//     queryKey: ["product"],
+//     queryFn: fetchProduct,
+//   });
+// }
+
+export function useProducts({ distance, filteritemName, lat, lng, unit } = {}) {
+  // console.log("valuesssss: ", distance, filteritemName, lat, lng, unit);
   return useQuery({
-    queryKey: ["product"],
-    queryFn: fetchProduct,
+    queryKey: ["products", distance, filteritemName, lat, lng, unit],
+    queryFn: () => fetchProduct({ distance, filteritemName, lat, lng, unit }),
+  });
+}
+
+export function useGetAllfilterProducts(
+  distance,
+  filteritemName,
+  lat,
+  lng,
+  unit
+) {
+  return useQuery({
+    queryKey: ["filterProduct"],
+    queryFn: () =>
+      fetchAllfilteredProducts(distance, filteritemName, lat, lng, unit),
   });
 }
 

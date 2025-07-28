@@ -161,6 +161,8 @@ header {
   height: 130px;
   padding: 2rem 2rem;
   border-radius: 4px;
+  display: flex;
+  flex-direction: column;
 }
 .nav-container {
   display: flex;
@@ -215,6 +217,7 @@ header {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 25px;
+  flex: 1;
   padding: 20px;
   justify-content: center;
 }
@@ -226,6 +229,7 @@ header {
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
+  align-self: start; /* Prevent stretching */
 }
 
 .product-card:hover {

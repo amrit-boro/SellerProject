@@ -13,9 +13,12 @@ function HomeItem({ item }) {
     price,
     description,
     images,
+    // seller,
     _id,
     seller: sellerProfile,
   } = item;
+
+  // console.log(seller);
 
   function handleClick() {
     dispatch(updateSearchName(itemName));
@@ -30,6 +33,7 @@ function HomeItem({ item }) {
       <div className="product-card" onClick={handleClick}>
         <img src={images} alt={itemName} />
         <h3>{itemName}</h3>
+        {/* <h3>{seller}</h3> */}
         <p className="rating">{"⭐".repeat(4)}</p>
         <p className="price">${price}</p>
         <button className="add-btn">View </button>

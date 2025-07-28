@@ -1,5 +1,52 @@
-export const fetchProduct = async () => {
-  const res = await fetch("http://localhost:3002/api/v1/product");
+// export const fetchProduct = async () => {
+//   const res = await fetch("http://localhost:3002/api/v1/product");
+//   if (!res.ok) throw new Error("Network response was not ok");
+//   const data = await res.json();
+//   return data;
+// };
+
+export const fetchProduct = async ({
+  distance,
+  filteritemName,
+  lat,
+  lng,
+  unit,
+} = {}) => {
+  let url = "http://localhost:3002/api/v1/product";
+  const latlng = `${lat},${lng}`;
+
+  // If location filters are present, change the base URL
+  if (distance && lat && lng && unit) {
+    url = `http://localhost:3002/api/v1/product/product-within/${distance}/center/${latlng}/unit/${unit}`;
+
+    // Append ?name= to it if a name is also provided
+    if (filteritemName) {
+      url += `?name=${encodeURIComponent(filteritemName)}`;
+    }
+  } else if (filteritemName) {
+    // Only product name filter is provided
+    url += `?name=${encodeURIComponent(filteritemName)}`;
+  }
+
+  const res = await fetch(url);
+  console.log("res: ", res);
+  if (!res.ok) throw new Error("Network response was not ok");
+  const data = await res.json();
+  console.log("data: ", data);
+  return data;
+};
+
+export const fetchAllfilteredProducts = async (
+  distance,
+  filteritemName,
+  lat,
+  lng,
+  unit
+) => {
+  const latlng = `${lat},${lng}`;
+  const res = await fetch(
+    `http://localhost:3002/api/v1/product/product-within/${distance}/center/${latlng}/unit/${unit}?name=${filteritemName}`
+  );
   if (!res.ok) throw new Error("Network response was not ok");
   const data = await res.json();
   return data;
