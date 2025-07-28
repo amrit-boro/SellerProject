@@ -8,17 +8,20 @@ function HomeItem({ item }) {
   const dispatch = useDispatch();
 
   // console.log("actual data coming from the databbase: ", data);
+  console.log("address: ", item.location?.address);
   const {
     name: itemName,
     price,
     description,
     images,
     // seller,
+    location,
     _id,
     seller: sellerProfile,
   } = item;
 
   // console.log(seller);
+  const address = item.location?.address;
 
   function handleClick() {
     dispatch(updateSearchName(itemName));
@@ -33,7 +36,10 @@ function HomeItem({ item }) {
       <div className="product-card" onClick={handleClick}>
         <img src={images} alt={itemName} />
         <h3>{itemName}</h3>
-        {/* <h3>{seller}</h3> */}
+        <span style={{ fontWeight: "bold", fontSize: "1.01rem" }}>
+          locaiton:
+        </span>{" "}
+        <span style={{ fontSize: "15px" }}>{address}</span>
         <p className="rating">{"⭐".repeat(4)}</p>
         <p className="price">${price}</p>
         <button className="add-btn">View </button>

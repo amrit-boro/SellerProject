@@ -24,14 +24,20 @@ function Borrow() {
   const {
     images,
     itemName,
-    price,
-    username,
-    sellerName,
     sellerProfilePic,
+    sellerName,
     sellerPhone,
     sellerEmail,
+    username,
+    price,
     _id,
   } = location.state;
+
+  // const sellerProfilePic = sellerProfile.SellerProfilePic;
+  // const sellerName = sellerProfile.sellerName;
+  // const sellerLocation = sellerProfile.sellerLocation;
+  // const sellerPhone = sellerProfile.sellerPhone;
+  // const sellerEmail = sellerProfile.sellerEmail;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

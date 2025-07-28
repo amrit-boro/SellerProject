@@ -50,6 +50,16 @@ function Home() {
         >
           {isLoading ? (
             <ItemSkeleton card={9} />
+          ) : products.length === 0 ? (
+            <p
+              style={{
+                justifyContent: "center",
+                textAlign: "center",
+                padding: "3rem",
+              }}
+            >
+              Sorry No products found within the selected range.
+            </p>
           ) : (
             products.map((item) => <HomeItem item={item} key={item._id} />)
           )}

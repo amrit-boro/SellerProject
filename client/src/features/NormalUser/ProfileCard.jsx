@@ -36,11 +36,26 @@ const ProfileCard = ({ item }) => {
     if (!isAuthenticate) {
       navigate("/login");
     } else {
-      navigate(`/borrow/${_id}`, { state: { images, itemName } });
+      navigate(`/borrow/${_id}`, {
+        state: {
+          images,
+          itemName,
+          sellerProfilePic,
+          sellerName,
+          sellerPhone,
+          sellerEmail,
+          sellerProfile,
+          price,
+          _id,
+        },
+      });
     }
   }
 
   const sellerName = sellerProfile.sellerName;
+  const sellerProfilePic = sellerProfile.SellerProfilePic;
+  const sellerEmail = sellerProfile.sellerEmail;
+  const sellerPhone = sellerProfile.sellerPhone;
 
   return (
     // Inside ProfileCard Component

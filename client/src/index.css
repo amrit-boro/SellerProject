@@ -13,6 +13,16 @@ body {
 
 /* Home page header..... */
 
+.seller_info {
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.seller_info:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
 .logo1 {
   font-size: 24px;
   font-weight: bold;
