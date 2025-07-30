@@ -16,6 +16,10 @@ router
   .get(productController.getProductsWithin);
 
 router
+  .route("/distances/:latlng/unit/:unit")
+  .get(productController.getDistances);
+
+router
   .route("/:id")
   .get(productController.getProduct)
   .patch(productController.updateProduct)

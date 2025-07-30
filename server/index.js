@@ -1,4 +1,5 @@
 const express = require("express");
+const compression = require("compression");
 const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
@@ -7,6 +8,7 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
+const cookieParser = require("cookie-parser");
 
 // Routers
 const userRouter = require("./router/userRouter");
@@ -16,7 +18,12 @@ const getProductRouter = require("./router/getProduct");
 
 // Middleware
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // 👈 Your frontend's exact URL
+    credentials: true, // 👈 Allow sending cookies
+  })
+);
 app.use(express.json());
 
 // Data sanitization against NoSQL query injection
@@ -31,13 +38,14 @@ app.use(morgan("dev"));
 //   windowMs: 60 * 60 * 1000, // 1 hour
 //   message: "Too many requests from this IP, please try again in an hour!",
 // });
-
+app.use(cookieParser());
 // Serve static files
 // app.use("/api", limiter);
+app.use(compression());
 app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  // console.log(req.headers);
+  console.log(req.cookies);
   next();
 });
 
@@ -47,6 +55,18 @@ app.get("/", (req, res) => {
 });
 
 // Use all routers
+// app.get("/set-cookie", (req, res) => {
+//   res.cookie("testCookie", "hello-world", {
+//     httpOnly: true,
+//     // secure: true, // enable this only when using HTTPS
+//   });
+//   res.send("Test cookie set!");
+// });
+// app.get("/z", (req, res) => {
+//   console.log("Cookies:", req.cookies);
+//   res.send("Check the console for cookies");
+// });
+
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/product", itemRouter);
 app.use("/api/v1/seller", sellerRouter);

@@ -195,7 +195,7 @@ exports.getProductsWithin = async (req, res) => {
     }
 
     // Convert distance to radians
-    console.log("latlng", latlng);
+    // console.log("latlng", latlng);
     let radius;
     if (unit === "km") {
       radius = distance / 6378.1;
@@ -240,4 +240,42 @@ exports.getProductsWithin = async (req, res) => {
       message: err.message,
     });
   }
+};
+
+exports.getDistances = async (req, res) => {
+  const { latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(",");
+
+  if (!lat || !lng) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Please provide latitude and longitude in the format lat,lng",
+    });
+  }
+
+  const distances = await Product.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: "Point",
+          coordinates: [lng * 1, lat * 1], // converting into number
+        },
+        distanceField: "distance",
+        distanceMultiplier: 0.001, // divide property
+      },
+    },
+    {
+      $project: {
+        distance: 1,
+        name: 1,
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: distances,
+    },
+  });
 };
