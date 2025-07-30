@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateName } from "../user/userSlice";
-import { Link } from "react-router-dom";
-import { Uselogin } from "../user/useLogin";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogin } from "../user/useLogin";
 import Spinner from "../ui/Spinner";
 import LogInLink from "./LogInLink";
 import { BsPersonCircle } from "react-icons/bs";
@@ -18,21 +18,31 @@ function Login() {
     };
   }, []);
 
-  const [fullName, SetfullName] = useState("amrit");
-  const [email, setEmail] = useState("amrit@example.com");
-  const [password, setPassword] = useState("amrit196");
+  const [fullName, setFullName] = useState("amrit");
+  const [email, setEmail] = useState("amrit@gmail.com");
+  const [password, setPassword] = useState("amrit12345");
   const dispatch = useDispatch();
-
-  const { login, isLoading } = Uselogin();
+  const loginMutation = useLogin();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!fullName) return null;
-    dispatch(updateName(fullName));
 
-    if (!email || !password) return;
-    if (isLoading) console.log("Loading...");
-    login({ email, password });
+    dispatch(updateName(fullName));
+    loginMutation.mutate(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          localStorage.setItem("token", data.token);
+          alert("Login Successful");
+          console.log("data: ", data);
+          // navigate("/dashboard"); // Optional
+        },
+        onError: (error) => {
+          alert(error.message);
+        },
+      }
+    );
   };
 
   return (
@@ -56,17 +66,6 @@ function Login() {
       <div className="login-container">
         <h2>ShopZone</h2>
         <form onSubmit={handleSubmit}>
-          {/* <div className="form-group">
-          <label>Name</label>
-          <input
-          value={fullName}
-          onChange={(e) => SetfullName(e.target.value)}
-          type="name"
-          placeholder="Enter your name"
-          required
-          />
-          </div> */}
-
           <div className="form-group">
             <label>Email</label>
             <input
@@ -74,7 +73,7 @@ function Login() {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
+              disabled={loginMutation.isPending}
               required
             />
           </div>
@@ -86,13 +85,17 @@ function Login() {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              disabled={isLoading}
+              disabled={loginMutation.isPending}
               required
             />
           </div>
 
-          <button type="submit" disabled={isLoading} className="login-button">
-            {!isLoading ? "login" : <Spinner />}
+          <button
+            type="submit"
+            disabled={loginMutation.isPending}
+            className="login-button"
+          >
+            {!loginMutation.isPending ? "login" : <Spinner />}
           </button>
         </form>
 

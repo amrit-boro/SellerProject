@@ -40,7 +40,7 @@ export function useGetAllfilterProducts(
 }
 
 export function useSeeProducts(itemName, min, max) {
-  console.log(min, max);
+  // console.log(min, max);
   return useQuery({
     queryKey: ["seeProduct", itemName, min, max],
     queryFn: () => fetchSearchProducts(itemName, min, max),
