@@ -17,9 +17,6 @@ function Borrow() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const x = location.state;
-  console.log("values: ", x);
-
   // lOCATION...................................................................................
   const {
     images,

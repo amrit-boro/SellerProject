@@ -12,14 +12,7 @@ function Home() {
   const { distance, filteritemName, unit } = useSelector(
     (state) => state.filter
   );
-  console.log(
-    "distance: ",
-    distance,
-    "itemName:",
-    filteritemName,
-    "unit: ",
-    unit
-  );
+
   // console.log("Filters:", distance);
   const lat = 26.212;
   const lng = 91.684;
@@ -33,7 +26,6 @@ function Home() {
     unit,
   });
   const products = data?.data?.products || [];
-  console.log("Products: ", products);
 
   return (
     <>

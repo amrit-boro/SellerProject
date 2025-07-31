@@ -6,18 +6,18 @@ import { BsPersonCircle } from "react-icons/bs";
 import LogInLink from "./authentication/LogInLink";
 import "react-loading-skeleton/dist/skeleton.css";
 import { navlist } from "./ui/navlist";
+import { useLoggedInUser } from "./user/useProduct";
+import { useEffect } from "react";
+import {
+  updateUserEmail,
+  updateUserName,
+  updateUserPhoto,
+} from "./user/userSlice";
 
 function NavBar() {
-  const username = useSelector((state) => state.user.username);
   const searchname = useSelector((state) => state.search.searchName);
-  // const { data: items, isLoading } = useItems();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // const allproducts = allproductsRaw?.data?.products || [];
-
-  // const dispatch = useDispatch();
-  // State to hold the current value of the search input
 
   function handleSearch(e) {
     if (e.key == "Enter" && searchname.trim()) {
@@ -26,7 +26,39 @@ function NavBar() {
       navigate(`/search?name=${searchname}`);
     }
   }
-  // dispatch(updateSearchName(e.target.value));
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !userId) return;
+
+    const fetchUser = async () => {
+      try {
+        const res = await fetch(`http://localhost:3002/api/v1/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch user");
+
+        const data = await res.json();
+        console.log("re-fetched data: ", data);
+        const user = data.data.user;
+
+        dispatch(updateUserName(user.name));
+        dispatch(updateUserEmail(user.email));
+        dispatch(updateUserPhoto(user.photo));
+      } catch (err) {
+        console.error("Error fetching user on app load:", err);
+      }
+    };
+
+    fetchUser();
+  }, [dispatch]);
+  const username = useSelector((state) => state.user.username);
+  const userphoto = useSelector((state) => state.user.userPhoto);
 
   return (
     <>
@@ -55,7 +87,7 @@ function NavBar() {
 
           <div style={{ display: "flex" }}>
             <div style={{ paddingTop: "3px" }}>
-              <BsPersonCircle size={25} color="#555" />
+              <img src={userphoto} alt="Seller" style={styles.profileImg} />
             </div>
             <LogInLink username={username} />
           </div>
@@ -74,5 +106,14 @@ function NavBar() {
     </>
   );
 }
+
+const styles = {
+  profileImg: {
+    width: "30px",
+    height: "30px",
+    borderRadius: "50%",
+    marginRight: "15px",
+  },
+};
 
 export default NavBar;

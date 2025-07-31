@@ -86,3 +86,21 @@ export const fetchSeller = async (id) => {
   const data = await res.json();
   return data;
 };
+
+export const fetchLoggedInUser = async () => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`http://localhost:3002/api/v1/user/:id`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch user data");
+  }
+
+  const data = await res.json();
+  return data.user; // adjust based on your backend response
+};

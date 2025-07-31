@@ -5,8 +5,10 @@ import {
   fetchAllsellerProducts,
   fetchProduct,
   fetchSeller,
+  fetchLoggedInUser,
 } from "./product";
 import { fetchSearchProducts } from "./product";
+import { useDispatch } from "react-redux";
 
 // must use before
 
@@ -59,5 +61,13 @@ export function useSeller(id) {
   return useQuery({
     queryKey: ["getSingleProduct", id],
     queryFn: () => fetchSeller(id),
+  });
+}
+export function useLoggedInUser() {
+  return useQuery({
+    queryKey: ["userLoggedIn"],
+    queryFn: fetchLoggedInUser,
+    retry: false, // optional: don't retry on failure
+    enabled: !!localStorage.getItem("token"), // only run if token exists
   });
 }

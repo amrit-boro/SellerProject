@@ -8,7 +8,6 @@ function HomeItem({ item }) {
   const dispatch = useDispatch();
 
   // console.log("actual data coming from the databbase: ", data);
-  console.log("address: ", item.location?.address);
   const {
     name: itemName,
     price,

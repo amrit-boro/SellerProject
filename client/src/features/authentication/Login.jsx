@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateName } from "../user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateUserEmail,
+  updateUserName,
+  updateUserPhoto,
+} from "../user/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../user/useLogin";
 import Spinner from "../ui/Spinner";
@@ -18,7 +22,7 @@ function Login() {
     };
   }, []);
 
-  const [fullName, setFullName] = useState("amrit");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("amrit@gmail.com");
   const [password, setPassword] = useState("amrit12345");
   const dispatch = useDispatch();
@@ -28,15 +32,24 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(updateName(fullName));
+    // dispatch(updateName(fullName));
     loginMutation.mutate(
       { email, password },
       {
         onSuccess: (data) => {
-          localStorage.setItem("token", data.token);
+          const token = data.token;
+          const user = data.data.user;
+
+          localStorage.setItem("token", token);
+          localStorage.setItem("userId", user._id); // Save ID
           alert("Login Successful");
           console.log("data: ", data);
-          // navigate("/dashboard"); // Optional
+          console.log(data.data.user.name);
+          dispatch(updateUserName(data.data.user.name));
+          dispatch(updateUserPhoto(data.data.user.photo));
+          dispatch(updateUserEmail(data.data.user.email));
+
+          navigate("/"); // Optional
         },
         onError: (error) => {
           alert(error.message);

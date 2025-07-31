@@ -15,12 +15,12 @@ function Profilee() {
   const username = useSelector((state) => state.user.username);
   const x = location.state;
   console.log("values: ", x);
-  const { itemName, images, price, description, sellerProfile, Location, _id } =
+  const { images, price, description, sellerProfile, Location, _id } =
     location.state;
 
   return (
     <>
-      <PageHelmet title={itemName} />
+      {/* <PageHelmet title={itemName} /> */}
       <header className="top-bar2">
         <Link
           className="logo2"
@@ -59,7 +59,6 @@ function Profilee() {
         description={description}
         Location={Location}
         price={price}
-        itemName={itemName}
         sellerProfile={sellerProfile}
         _id={_id}
         username={username}

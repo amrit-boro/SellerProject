@@ -1,27 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { FaS } from "react-icons/fa6";
 
 const initialState = {
   username: "",
-  phoneNumber: "912323298",
-  email: "amrit@yahoo.com",
-  password: "amrit1999",
-  confirmPassword: "amrit1999",
-  isAuthenticate: false,
+  phoneNumber: "",
+  userPhoto: null,
+  email: "",
+  password: "",
+  confirmPassword: "",
+  isAuthenticate: null,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateName(state, action) {
+    updateUserName(state, action) {
       state.username = action.payload;
       state.isAuthenticate = true;
     },
     updatePhoneNumber(state, action) {
       state.phoneNumber = action.payload;
     },
-    updateEmail(state, action) {
+    updateUserEmail(state, action) {
       state.email = action.payload;
     },
     updatePassword(state, action) {
@@ -30,8 +30,12 @@ const userSlice = createSlice({
     updateConfirm(state, action) {
       state.confirmPassword = action.payload;
     },
+    updateUserPhoto(state, action) {
+      state.userPhoto = action.payload;
+    },
   },
 });
 
-export const { updateName, setUser } = userSlice.actions;
+export const { updateUserName, updateUserPhoto, updateUserEmail } =
+  userSlice.actions;
 export default userSlice.reducer;
