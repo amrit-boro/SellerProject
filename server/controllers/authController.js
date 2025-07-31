@@ -9,7 +9,7 @@ const signToken = (id) => {
 };
 
 const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id);
+  const token = signToken(user._id); // Create the token
 
   const cookieOptions = {
     expires: new Date(
@@ -47,6 +47,7 @@ exports.login = async (req, res) => {
   const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
+    // password= currently comming password from the user ///  and user.password is already
     return res.status(401).json({
       status: "fail",
       message: "Incorrect email or password",
@@ -65,6 +66,7 @@ exports.protect = async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+    console.log("Got the token:", token);
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
@@ -109,6 +111,43 @@ exports.protect = async (req, res, next) => {
 
   // ✅ 5) Attach user to request
   req.user = currentUser;
+  next();
+};
+
+exports.isLoggedIn = async (req, res, next) => {
+  if (req.cookies.jwt) {
+    // ✅ 2) Verify token
+    let decoded;
+    try {
+      decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
+    } catch (error) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Invalid token. Please log in again.",
+      });
+    }
+
+    // ✅ 3) Check if user still exists
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
+      return next();
+    }
+
+    // ✅ 4) Check if password changed after token issued
+    if (
+      currentUser.changePasswordAfter &&
+      currentUser.changePasswordAfter(decoded.iat)
+    ) {
+      return next();
+    }
+
+    // THERE IS A LOGGEDIN USER
+    req.local.user = currentUser;
+    next();
+  }
   next();
 };
 
