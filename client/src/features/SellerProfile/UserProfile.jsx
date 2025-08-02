@@ -21,6 +21,9 @@ function UserProfile() {
     dispatch(updateSearchName(e.target.value));
   }
 
+  const sellerToken = localStorage.getItem("sellerToken");
+  console.log("token coming from the storage:", sellerToken);
+
   return (
     <>
       <header className="top-bar2">

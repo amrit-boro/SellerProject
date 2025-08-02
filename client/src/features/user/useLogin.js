@@ -39,3 +39,25 @@ export const useLogin = () => {
     mutationFn: loginUser,
   });
 };
+
+const loginSeller = async ({ email, password }) => {
+  const res = await fetch("http://localhost:3002/api/v1/seller/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Login Failed");
+
+  return data;
+};
+
+export const useSellerlogin = () => {
+  return useMutation({
+    mutationFn: loginSeller,
+  });
+};

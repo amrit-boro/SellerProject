@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react";
 
 const initialState = {
-  sellerName: "Amrit Boro",
-  sellerAbout: "write aobut what you gonna sell",
+  sellerName: "",
+  sellerAbout: "% write aobut what you gonna sell %",
   sellerEmail: "yahoo@com",
   sellerPhone: "9123432455",
   sellerAddress: "Guwahati",
@@ -11,6 +12,7 @@ const initialState = {
   sellerAgreement: false,
   sellerAccountNumber: "1234567890",
   sellerAccountHolder: "Amrit Boro",
+  sellerProfilePic: null,
 };
 
 const sellerSlice = createSlice({
@@ -48,6 +50,9 @@ const sellerSlice = createSlice({
     updateSellerAccountNumber(state, action) {
       state.sellerAccountNumber = action.payload;
     },
+    updateSellerProfilePic(state, action) {
+      state.sellerProfilePic = action.payload;
+    },
   },
 });
 
@@ -62,6 +67,7 @@ export const {
   updateSellerAgreement,
   updateSellerAccountHolder,
   updateSellerAccountNumber,
+  updateSellerProfilePic,
 } = sellerSlice.actions;
 
 export default sellerSlice.reducer;

@@ -6,17 +6,18 @@ import { useSelector } from "react-redux";
 const categories = ["Electronics", "Clothing", "Home", "Toys", "Books"];
 
 const Profile = ({ seller }) => {
-  const [showEditor, setShowEditor] = useState(false);
+  const location = useLocation();
+  // const [showEditor, setShowEditor] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    if (showEditor) {
-      navigate("/sellerprofile/editsellerProfile");
-    }
-  }, [showEditor, navigate]);
+  // useEffect(() => {
+  //   if (showEditor) {
+  //     navigate("/sellerprofile/editsellerProfile");
+  //   }
+  // }, [showEditor, navigate]);
 
-  const Seller = useSelector((state) => state.seller);
+  const { SellerName, SellerAbout, SellerProfilePic } = location.state;
 
   return (
     <>
@@ -34,17 +35,28 @@ const Profile = ({ seller }) => {
         {/* Sidebar */}
         <div style={styles.sidebar}>
           <div style={styles.profileSection}>
-            <div style={styles.avatar}></div>
+            <img
+              src={SellerProfilePic}
+              alt="Profile"
+              style={{
+                height: "70px",
+                width: "70px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "2px solid #ccc", // optional
+                boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)", // optional
+              }}
+            />{" "}
             {/* name..... */}
-            <p>{Seller.sellerName}</p>
+            <p>{SellerName}</p>
             {/* About............ */}
-            <p>About : {Seller.sellerAbout}</p>
+            <p>About : {SellerAbout}</p>
             {/* Ratings............. */}
             <p>My ratings: ⭐ {seller?.rating || "4.5"}</p>
           </div>
           {/* Edit.............. */}
           <div style={styles.sidebarButtons}>
-            <button onClick={() => setShowEditor(true)}>Edit Profile</button>
+            {/* <button onClick={() => setShowEditor(true)}>Edit Profile</button> */}
             <button>Add Product</button>
           </div>
         </div>

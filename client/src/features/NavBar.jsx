@@ -18,6 +18,11 @@ function NavBar() {
   const searchname = useSelector((state) => state.search.searchName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const SellerName = useSelector((state) => state.seller.sellerName);
+  const SellerAbout = useSelector((state) => state.seller.sellerAbout);
+  const SellerProfilePic = useSelector(
+    (state) => state.seller.sellerProfilePic
+  );
 
   function handleSearch(e) {
     if (e.key == "Enter" && searchname.trim()) {
@@ -30,6 +35,7 @@ function NavBar() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
+    console.log(token);
 
     if (!token || !userId) return;
 
@@ -57,6 +63,20 @@ function NavBar() {
 
     fetchUser();
   }, [dispatch]);
+
+  const handleClick = () => {
+    const token = localStorage.getItem("sellerToken");
+
+    if (token) {
+      // You can add any values you want to pass via state
+      navigate("/sellerprofile", {
+        state: { SellerName, SellerAbout, SellerProfilePic },
+      });
+    } else {
+      navigate("/profile");
+    }
+  };
+
   const username = useSelector((state) => state.user.username);
   const userphoto = useSelector((state) => state.user.userPhoto);
 
@@ -81,10 +101,10 @@ function NavBar() {
 
         <div className="header-buttons">
           {/* Seller */}
-          <Link className="login-button-1" to={"/profile"}>
-            Become a seller
-          </Link>
 
+          <div onClick={handleClick} style={{ cursor: "pointer" }}>
+            Become a Seller
+          </div>
           <div style={{ display: "flex" }}>
             <div style={{ paddingTop: "3px" }}>
               <img src={userphoto} alt="Seller" style={styles.profileImg} />

@@ -18,7 +18,7 @@ function BecomeSellerLanding({ onCreateProfile }) {
         <div>
           <button
             className="buttonStyle"
-            onClick={() => navigate("/seller/Login")}
+            onClick={() => navigate("/seller/login")}
           >
             LogIn
           </button>

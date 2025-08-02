@@ -49,7 +49,7 @@ function Login() {
           dispatch(updateUserPhoto(data.data.user.photo));
           dispatch(updateUserEmail(data.data.user.email));
 
-          navigate("/"); // Optional
+          navigate("/"); // Optionals
         },
         onError: (error) => {
           alert(error.message);

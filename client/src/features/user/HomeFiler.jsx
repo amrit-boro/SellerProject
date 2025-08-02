@@ -185,13 +185,6 @@ const Sidebar = () => {
       </button>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <div>
-        {distance}
-        {/* {filteritemName} */}
-        {itemName}
-        latitue: {lat}
-        lng : {lng}
-      </div>
     </aside>
   );
 };
