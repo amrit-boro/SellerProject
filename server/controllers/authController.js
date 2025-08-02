@@ -1,6 +1,7 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
+const Seller = require("../model/sellerModel");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -36,6 +37,7 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password);
 
   if (!email || !password) {
     return res.status(400).json({
@@ -55,6 +57,31 @@ exports.login = async (req, res) => {
   }
 
   createSendToken(user, 200, res); // ✅ Use this helper to send cookie + response
+};
+
+exports.sellerLogin = async (req, res) => {
+  const { email, password } = req.body;
+  console.log(email, password);
+  if (!email || !password) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Please provide email and password",
+    });
+  }
+
+  const seller = await Seller.findOne({ sellerEmail: email }).select(
+    "+password"
+  );
+  console.log(password, seller.password);
+
+  if (!seller || !(await seller.correctPassword(password, seller.password))) {
+    return res.status(401).json({
+      status: "fail",
+      message: "Incorrect email or password",
+    });
+  }
+
+  createSendToken(seller, 200, res);
 };
 
 exports.protect = async (req, res, next) => {
@@ -165,6 +192,37 @@ exports.signup = async (req, res) => {
 
     // Generate JWT token
     createSendToken(newUser, 201, res);
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+exports.sellersignup = async (req, res) => {
+  try {
+    const newSeller = await Seller.create({
+      sellerName: req.body.sellerName,
+      sellerAbout: req.body.sellerAbout,
+      SellerProfilePic: req.body.SellerProfilePic || "default.jpg",
+      sellerEmail: req.body.sellerEmail,
+      sellerPhone: req.body.sellerPhone,
+      sellerAddress: req.body.sellerAddress,
+      sellerPanCard: req.body.sellerPanCard,
+      sellerIFSC: req.body.sellerIFSC,
+      sellerAccountNumber: req.body.sellerAccountNumber,
+      sellerAccountHolder: req.body.sellerAccountHolder,
+      startLocation: {
+        coordinates: req.body.startLocation.coordinates,
+        address: req.body.startLocation.address,
+        description: req.body.startLocation.description,
+      },
+      password: req.body.password,
+      passwordConfirm: req.body.passwordConfirm,
+    });
+
+    // Generate JWT token
+    createSendToken(newSeller, 201, res);
   } catch (error) {
     res.status(500).json({
       status: "error",

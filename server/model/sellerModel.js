@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const sellerSchema = new mongoose.Schema({
   sellerName: {
@@ -25,6 +26,24 @@ const sellerSchema = new mongoose.Schema({
       /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
       "Please fill a valid email address",
     ],
+  },
+  password: {
+    type: String,
+    default: "amrit196",
+    required: [true, "Please provide a password"],
+    minlength: 8,
+    unique: true,
+    select: false, // Do not return password in queries
+  },
+  passwordConfirm: {
+    type: String,
+    required: [true, "Please confirm your password"],
+    validate: {
+      validator: function (el) {
+        return el === this.password;
+      },
+      message: "Passwords do not match",
+    },
   },
   sellerPhone: {
     type: String,
@@ -84,6 +103,37 @@ const sellerSchema = new mongoose.Schema({
 });
 
 sellerSchema.index({ startLocation: "2dsphere" });
+
+// Pre-save middleware to hash password
+sellerSchema.pre("save", async function (next) {
+  // only run this function if password was modified
+  if (!this.isModified("password")) return next();
+  // hash the password with cost of 12
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined; // Remove passwordConfirm after hashing
+  next();
+});
+
+sellerSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword); // here userPasswrod is the hashed password Stored in the database (already hashed)  ||  // candidatePassword is the password entered by the user during login
+};
+
+sellerSchema.methods.changePasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+    // console.log(changedTimestamp, JWTTimestamp);
+    return JWTTimestamp < changedTimestamp; // If JWT timestamp is less than changed timestamp, it means password was changed after the token was issued
+  }
+
+  // False means NOT changed
+  return false;
+};
 
 const Seller = mongoose.model("Seller", sellerSchema);
 
