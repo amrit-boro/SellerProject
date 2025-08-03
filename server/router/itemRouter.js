@@ -9,6 +9,10 @@ const router = express.Router();
 //   .get(productController.aliasTopProduct, productController.getAllProduct);
 
 router
+  .route("/getAllproductsBySellerId/:sellerId")
+  .get(productController.getAllProductBysellerId);
+
+router
   .route("/")
   .get(productController.getAllProduct)
   .post(productController.createProduct);

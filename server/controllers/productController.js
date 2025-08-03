@@ -8,6 +8,25 @@ exports.aliasTopProduct = (req, res, next) => {
   next();
 };
 
+exports.getAllProductBysellerId = async (req, res) => {
+  try {
+    const { sellerId } = req.params;
+    const products = await Product.find({ seller: sellerId });
+    res.status(200).json({
+      status: "success",
+      results: products.length,
+      data: {
+        products,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+};
+
 exports.getAllProduct = async (req, res) => {
   try {
     const features = new ApiFeatures(
