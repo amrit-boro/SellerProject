@@ -1,20 +1,30 @@
-const products = [
-  { _id: 1, name: "Badminton", price: 2000 },
-  { _id: 2, name: "Samsung Galaxy a14 5g", price: 20000 },
+import { useProductsBySellerId } from "../user/useProduct";
 
-  { _id: 8, name: "Bag", price: 800 },
-  // Add more if needed
-];
+const SellerProducts = ({ sellerId }) => {
+  const { data, isLoading } = useProductsBySellerId(sellerId);
+  const products = data?.data?.products || [];
 
-const SellerProducts = () => {
+  if (isLoading) return <p>Loading...</p>;
+
+  const isSingle = products.length === 1;
+
   return (
     <div style={styles.gridWrapper}>
-      <div style={styles.grid}>
+      <div
+        style={{
+          ...styles.grid,
+          justifyContent: products.length === 1 ? "start" : "space-between",
+        }}
+      >
         {products.map((product) => (
           <div key={product._id} style={styles.productCard}>
-            <div style={styles.imagePlaceholder}></div>
-            <h4>{product.name}</h4>
-            <p style={{ color: "green", fontWeight: "bold" }}>
+            <img
+              style={styles.imagePlaceholder}
+              src={product.images?.[0]}
+              alt={product.name}
+            />
+            <h4 style={{ margin: "2px" }}>{product.name}</h4>
+            <p style={{ color: "green", fontWeight: "bold", margin: "4px" }}>
               ₹{product.price}
             </p>
             <button style={styles.viewBtn}>View</button>
@@ -31,10 +41,12 @@ const styles = {
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", // was 280px
     gap: "20px",
     padding: "10px",
+    alignItems: "start",
   },
+
   productCard: {
     border: "1px solid #ddd",
     borderRadius: "10px",
@@ -42,21 +54,27 @@ const styles = {
     textAlign: "center",
     backgroundColor: "#fff",
     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-    minHeight: "260px", // slightly taller
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    gap: "8px",
+
+    maxWidth: "240px", // ✅ limit size
+    width: "100%", // ✅ allow fill but stop from stretching too much
+    // ❌ remove margin: "0 auto"
   },
+
   imagePlaceholder: {
     width: "100%",
-    height: "150px", // was 120px, now taller
-    backgroundColor: "#ddd",
+    height: "200px", // increased a bit, adjust as needed
+    objectFit: "contain", // 👈 important: fixes stretched look
     borderRadius: "6px",
     marginBottom: "12px",
+    backgroundColor: "#f0f0f0", // optional lighter background
   },
+
   viewBtn: {
     background: "yellow",
-    padding: "8px 16px",
+    padding: "8px 8px",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",

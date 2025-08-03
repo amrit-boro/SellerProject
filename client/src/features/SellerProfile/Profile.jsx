@@ -1,23 +1,36 @@
 import { useEffect, useState } from "react";
 import SellerProducts from "./SellerProducts";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const categories = ["Electronics", "Clothing", "Home", "Toys", "Books"];
 
-const Profile = ({ seller }) => {
-  const location = useLocation();
-  // const [showEditor, setShowEditor] = useState(false);
+const Profile = () => {
+  const [sellerData, setSellerData] = useState(null);
 
-  // const navigate = useNavigate();
+  useEffect(() => {
+    const sellerToken = localStorage.getItem("sellerToken");
 
-  // useEffect(() => {
-  //   if (showEditor) {
-  //     navigate("/sellerprofile/editsellerProfile");
-  //   }
-  // }, [showEditor, navigate]);
+    if (sellerToken) {
+      try {
+        const decoded = jwtDecode(sellerToken);
+        console.log("sellerId:", decoded.id);
 
-  const { SellerName, SellerAbout, SellerProfilePic } = location.state;
+        fetch(`http://localhost:3002/api/v1/seller/${decoded.id}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setSellerData(data?.data?.seller);
+          })
+          .catch((error) => {
+            console.log("Failed to fetch seller Data", error);
+          });
+      } catch (error) {
+        console.log("Invalid Token", error);
+      }
+    }
+  }, []);
+
+  const sellerId = sellerData?._id;
 
   return (
     <>
@@ -34,27 +47,28 @@ const Profile = ({ seller }) => {
       <div style={styles.container}>
         {/* Sidebar */}
         <div style={styles.sidebar}>
-          <div style={styles.profileSection}>
-            <img
-              src={SellerProfilePic}
-              alt="Profile"
-              style={{
-                height: "70px",
-                width: "70px",
-                borderRadius: "50%",
-                objectFit: "cover",
-                border: "2px solid #ccc", // optional
-                boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)", // optional
-              }}
-            />{" "}
-            {/* name..... */}
-            <p>{SellerName}</p>
-            {/* About............ */}
-            <p>About : {SellerAbout}</p>
-            {/* Ratings............. */}
-            <p>My ratings: ⭐ {seller?.rating || "4.5"}</p>
-          </div>
-          {/* Edit.............. */}
+          {!sellerData ? (
+            <p>Loading...</p>
+          ) : (
+            <div style={styles.profileSection}>
+              <img
+                src={sellerData?.SellerProfilePic}
+                alt="Profile"
+                style={{
+                  height: "70px",
+                  width: "70px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  border: "2px solid #ccc",
+                  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
+                }}
+              />
+              <p>{sellerData?.sellerName}</p>
+              <p>About: {sellerData?.sellerAbout}</p>
+              <p>My ratings: ⭐ {sellerData?.rating || "4.5"}</p>
+            </div>
+          )}
+
           <div style={styles.sidebarButtons}>
             {/* <button onClick={() => setShowEditor(true)}>Edit Profile</button> */}
             <button>Add Product</button>
@@ -83,7 +97,7 @@ const Profile = ({ seller }) => {
           </div>
 
           <div style={styles.scrollableContent}>
-            <SellerProducts />
+            <SellerProducts sellerId={sellerId} />
           </div>
         </div>
       </div>
@@ -106,13 +120,6 @@ const styles = {
   profileSection: {
     textAlign: "center",
     marginBottom: "20px",
-  },
-  avatar: {
-    width: "80px",
-    height: "80px",
-    borderRadius: "50%",
-    backgroundColor: "gray",
-    margin: "0 auto 10px",
   },
   sidebarButtons: {
     display: "flex",
@@ -138,11 +145,10 @@ const styles = {
     zIndex: 10,
   },
   scrollableContent: {
-    flex: 1, // THIS makes the content stretch vertically
+    flex: 1,
     overflowY: "auto",
-    overflowX: "hidden", // prevent horizontal scroll
+    overflowX: "hidden",
   },
-
   navItem: {
     padding: "6px 12px",
     border: "1px solid #ddd",

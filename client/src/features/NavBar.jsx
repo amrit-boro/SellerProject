@@ -6,7 +6,7 @@ import { BsPersonCircle } from "react-icons/bs";
 import LogInLink from "./authentication/LogInLink";
 import "react-loading-skeleton/dist/skeleton.css";
 import { navlist } from "./ui/navlist";
-import { useLoggedInUser } from "./user/useProduct";
+import { jwtDecode } from "jwt-decode";
 import { useEffect } from "react";
 import {
   updateUserEmail,
@@ -64,6 +64,8 @@ function NavBar() {
     fetchUser();
   }, [dispatch]);
 
+  const isAuthenticate = localStorage.getItem("sellerToken");
+
   const handleClick = () => {
     const token = localStorage.getItem("sellerToken");
 
@@ -103,7 +105,7 @@ function NavBar() {
           {/* Seller */}
 
           <div onClick={handleClick} style={{ cursor: "pointer" }}>
-            Become a Seller
+            {isAuthenticate ? "Seller" : "Become a Seller"}
           </div>
           <div style={{ display: "flex" }}>
             <div style={{ paddingTop: "3px" }}>

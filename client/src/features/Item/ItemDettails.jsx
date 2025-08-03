@@ -16,6 +16,7 @@ function ItemDetails({
   const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
 
   const [showImageModal, setShowImageModal] = useState(false);
+  const [show, setShonw] = useState(false);
 
   function handleBorrow() {
     const token = localStorage.getItem("token");
@@ -118,8 +119,35 @@ function ItemDetails({
         </div>
 
         <div style={styles.title}>
-          % NSVL Sauce Pan 15cm Stainless Steel (1L) – Induction & Gas
-          Compatible %
+          {description.slice(0, 196) + ""}
+          {show ? (
+            <span>
+              {description.slice(196)}{" "}
+              <span
+                style={{
+                  color: "blue",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+                onClick={() => {
+                  setShonw(false);
+                }}
+              >
+                see less
+              </span>
+            </span>
+          ) : (
+            <span
+              style={{
+                color: "blue",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
+              onClick={() => setShonw(true)}
+            >
+              see more
+            </span>
+          )}
         </div>
 
         <div>

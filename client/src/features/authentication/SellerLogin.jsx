@@ -18,7 +18,7 @@ function SellerLogin() {
   const sellerloginMutation = useSellerlogin();
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("bhanu@gmail.com");
+  const [email, setEmail] = useState("bikash@example.com");
   const [password, setPassword] = useState("@mrit196");
 
   const handleSubmit = (e) => {
