@@ -48,6 +48,10 @@ const router = createBrowserRouter([
     path: "/sellerprofile",
     element: <Profile />,
   },
+  // {
+  //   path: "/addproduct",
+  //   element: <Addproduct />,
+  // },
   {
     path: "/sellerprofile/editsellerProfile",
     element: <EditProfile />,
