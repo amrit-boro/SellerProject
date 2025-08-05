@@ -183,7 +183,7 @@ function ItemDetails({
             style={{ ...styles.button, ...styles.buyNow }}
             onClick={handleBorrow}
           >
-            BUY NOW
+            Borrow Now
           </button>
           <button style={{ ...styles.button, ...styles.emiBtn }}>
             PAY WITH EMI

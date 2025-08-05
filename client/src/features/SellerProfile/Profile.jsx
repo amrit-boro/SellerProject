@@ -35,13 +35,17 @@ const Profile = () => {
     }
   }, []);
 
-  const handleFileUpload = (e) => {
+  const handleUploader = (e) => {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
     }
   };
+
+  function handleFileUpload() {
+    if (!previewImage) alert("No file");
+  }
 
   const sellerId = sellerData?._id;
   console.log("sellerId:", sellerId);
@@ -130,33 +134,28 @@ const Profile = () => {
             <div style={design.uploadSection}>
               {!previewImage ? (
                 <>
-                  <p style={{ color: "#333", zIndex: 1 }}>
-                    Drag photos and videos here
-                  </p>
-                  <label style={{ ...design.uploadButton, zIndex: 1 }}>
-                    select from your computer
-                    <input type="file" onChange={handleFileUpload} hidden />
-                  </label>
+                  <div>
+                    <label style={{ ...design.uploadButton, zIndex: 1 }}>
+                      select from your computer
+                      <input type="file" onChange={handleUploader} hidden />
+                    </label>
+                  </div>
                 </>
               ) : (
                 <label style={design.imageWrapper}>
+                  <div>hello</div>
                   <img
                     src={previewImage}
                     alt="Preview"
                     style={design.fullImage}
                   />
-                  <input type="file" onChange={handleFileUpload} hidden />
+                  <input type="file" onChange={handleUploader} hidden />
                 </label>
               )}
             </div>
 
             <div style={design.formSection}>
-              <form
-                style={design.form}
-                onSubmit={() => {
-                  alert("hel");
-                }}
-              >
+              <form style={design.form} onSubmit={handleFileUpload}>
                 <label style={design.label}>
                   Add item location:
                   <input type="text" name="location" style={design.input} />
@@ -283,7 +282,19 @@ const design = {
     position: "absolute",
     top: "10px",
     right: "10px",
-    background: "red",
+    background: "#936e6e",
+    color: "white",
+    border: "none",
+    borderRadius: "50%",
+    width: "25px",
+    height: "25px",
+    cursor: "pointer",
+  },
+  backButton: {
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    background: "#936e6e",
     color: "white",
     border: "none",
     borderRadius: "50%",
@@ -297,7 +308,7 @@ const design = {
     justifyContent: "center",
     alignItems: "center",
     position: "relative", // Important for absolute image
-    backgroundColor: "#f7f7f7",
+    backgroundColor: "rgb(35 33 33)",
     height: "100%", // Ensure full height
     width: "100%", // Ensure full width
   },
@@ -314,7 +325,8 @@ const design = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "rgb(29 31 37)",
+    color: "white",
   },
   form: {
     display: "flex",
