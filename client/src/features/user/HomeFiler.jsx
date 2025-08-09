@@ -46,9 +46,6 @@ const Sidebar = () => {
       return;
     }
 
-    console.log("📏 Distance entered:", distance);
-    console.log("📐 Unit selected:", unit);
-
     try {
       let userLocation = location;
 

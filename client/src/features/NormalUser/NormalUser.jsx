@@ -103,7 +103,6 @@ function NormalUser() {
       <div className="main-layout">
         <aside className="sidebar_filter">
           <h3>Filter by Price</h3>
-
           <form onSubmit={handleSubmit} className="filter_container">
             <select
               name="min"

@@ -32,18 +32,7 @@ function UserProfile() {
           ShopZone
         </Link>
 
-        <div className="header-buttons">
-          {/* Seller */}
-
-          <div style={{ display: "flex" }}>
-            <div style={{ paddingTop: "3px" }}>
-              <BsPersonCircle size={25} color="#555" />
-            </div>
-            <LogInLink username={username} />
-          </div>
-
-          <button className="cart-btn-1">🛒 Cart</button>
-        </div>
+        <span style={{ marginRight: "25px" }}>Hello, {username}</span>
       </header>
       {showForm ? (
         <ProfileCreate />

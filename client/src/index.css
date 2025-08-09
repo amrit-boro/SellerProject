@@ -67,6 +67,7 @@ body {
   text-decoration: none;
   font-size: 14px;
   white-space: nowrap;
+  padding-top: 30px;
 }
 
 .cart-btn-1 {
@@ -576,7 +577,8 @@ header {
   text-align: right;
   font-size: 14px;
   font-weight: bold;
-  padding-right: 25px;
+  padding-top: 3px;
+  padding-right: 23px;
 }
 
 /* Navigation */

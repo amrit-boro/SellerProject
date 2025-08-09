@@ -5,7 +5,7 @@ import { useState } from "react";
 import ProfileCreate from "../SellerProfile/ProfileCreate";
 import { useSellerlogin } from "../user/useLogin";
 import Spinner from "../ui/Spinner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateSellerAbout,
   updateSellerName,
@@ -14,6 +14,8 @@ import {
 
 function SellerLogin() {
   const [showCreate, setShowCreate] = useState(false);
+  const username = useSelector((state) => state.user.username);
+
   const navigate = useNavigate();
   const sellerloginMutation = useSellerlogin();
   const dispatch = useDispatch();
@@ -58,15 +60,7 @@ function SellerLogin() {
         <Link className="logo2" to={"/"}>
           ShopZone
         </Link>
-
-        <div className="header-buttons">
-          {/* Seller */}
-          <Link className="login-button-1" to={"/profile"}>
-            Become a seller
-          </Link>
-
-          <button className="cart-btn-1">🛒 Cart</button>
-        </div>
+        <span style={{ marginRight: "27px" }}>Hello , {username}</span>
       </header>
 
       <div className="login-container">

@@ -89,7 +89,7 @@ function NavBar() {
         <Link className="logo2" to={"/"}>
           ShopZone
         </Link>
-
+        {/* 
         <div className="search-container">
           <input
             type="text"
@@ -99,22 +99,35 @@ function NavBar() {
             placeholder="Search for products..."
           />
           <button className="search-button">🔍</button>
-        </div>
+        </div> */}
 
         <div className="header-buttons">
           {/* Seller */}
 
-          <div onClick={handleClick} style={{ cursor: "pointer" }}>
+          <div
+            onClick={handleClick}
+            style={{ cursor: "pointer", marginRight: "15px" }}
+          >
             {isAuthenticate ? "Seller" : "Become a Seller"}
           </div>
-          <div style={{ display: "flex" }}>
-            <div style={{ paddingTop: "3px" }}>
-              <img src={userphoto} alt="Seller" style={styles.profileImg} />
-            </div>
-            <LogInLink username={username} />
+
+          <Link
+            style={{
+              textDecoration: "None",
+              color: "white",
+              marginRight: "15px",
+            }}
+            to={"/login"}
+          >
+            {username ? ` ${username}` : "Login / SignUp"}
+          </Link>
+
+          {/* <LogInLink username={username} /> */}
+          <div style={{ paddingTop: "3px" }}>
+            <img src={userphoto} alt="Seller" style={styles.profileImg} />
           </div>
 
-          <button className="cart-btn-1">🛒 Cart</button>
+          {/* <button className="cart-btn-1">🛒 Cart</button> */}
         </div>
       </header>
 

@@ -69,7 +69,7 @@ function Borrow() {
           ShopeZone
         </Link>
 
-        <div className="account2">Hello {username}</div>
+        <div className="account2"> {username}</div>
       </header>
 
       <form style={styles.flexWrapper} onSubmit={handleSubmit}>

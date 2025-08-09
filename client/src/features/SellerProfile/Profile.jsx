@@ -9,6 +9,18 @@ const Profile = () => {
   const [sellerData, setSellerData] = useState(null);
   const [showAddProductForm, setShowAddProductForm] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [fromData, setFromData] = useState({
+    name: "",
+    price: "",
+    description: "",
+    quantity: "",
+    images: [],
+    seller: "",
+    location: {
+      coordinates: [0, 0],
+      address: "",
+    },
+  });
 
   const navigate = useNavigate();
 
@@ -167,6 +179,11 @@ const Profile = () => {
                 </label>
 
                 <label style={design.label}>
+                  Add Price:
+                  <input type="number" name="price" />
+                </label>
+
+                <label style={design.label}>
                   Add Item Description:
                   <textarea name="description" style={design.textarea} />
                 </label>
@@ -248,7 +265,9 @@ const design = {
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1000,
+    padding: "10px", // Prevent overflow on very small screens
   },
+
   imageWrapper: {
     width: "100%",
     height: "100%",
@@ -267,8 +286,11 @@ const design = {
 
   modalCard: {
     display: "flex",
-    width: "1200px", // ⬅️ Increased from 800px
-    height: "800px", // ⬅️ Increased from 500px
+    flexDirection: "row",
+    width: "90vw", // responsive width
+    height: "90vh", // responsive height
+    maxWidth: "1200px", // cap for large screens
+    maxHeight: "800px", // cap for large screens
     borderRadius: "10px",
     overflow: "hidden",
     boxShadow: "0 0 20px rgba(0,0,0,0.3)",
@@ -276,6 +298,7 @@ const design = {
     color: "#000",
     fontFamily: "Arial, sans-serif",
     position: "relative",
+    flexWrap: "wrap", // allow stacking in smaller devices
   },
 
   closeButton: {
@@ -289,11 +312,13 @@ const design = {
     width: "25px",
     height: "25px",
     cursor: "pointer",
+    zIndex: 2,
   },
+
   backButton: {
     position: "absolute",
     top: "10px",
-    right: "10px",
+    left: "10px",
     background: "#936e6e",
     color: "white",
     border: "none",
@@ -301,16 +326,19 @@ const design = {
     width: "25px",
     height: "25px",
     cursor: "pointer",
+    zIndex: 2,
   },
+
   uploadSection: {
     flex: 1,
+    minWidth: "250px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    position: "relative", // Important for absolute image
+    position: "relative",
     backgroundColor: "rgb(35 33 33)",
-    height: "100%", // Ensure full height
-    width: "100%", // Ensure full width
+    height: "100%",
+    width: "100%",
   },
 
   uploadButton: {
@@ -320,30 +348,36 @@ const design = {
     borderRadius: "5px",
     cursor: "pointer",
   },
+
   formSection: {
     flex: 0.55,
+    minWidth: "250px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgb(29 31 37)",
     color: "white",
   },
+
   form: {
     display: "flex",
     flexDirection: "column",
     gap: "1rem",
     width: "80%",
   },
+
   label: {
     display: "flex",
     flexDirection: "column",
   },
+
   input: {
     padding: "8px",
     marginTop: "5px",
     borderRadius: "4px",
     border: "1px solid #ccc",
   },
+
   textarea: {
     padding: "8px",
     marginTop: "5px",
@@ -352,6 +386,7 @@ const design = {
     resize: "vertical",
     height: "80px",
   },
+
   submitButton: {
     padding: "10px",
     backgroundColor: "#444",
@@ -360,6 +395,20 @@ const design = {
     borderRadius: "5px",
     cursor: "pointer",
     marginTop: "10px",
+  },
+
+  // Media query simulation in JS (for inline styles)
+  "@media (max-width: 768px)": {
+    modalCard: {
+      flexDirection: "column",
+      height: "auto",
+    },
+    uploadSection: {
+      height: "200px",
+    },
+    formSection: {
+      padding: "20px 0",
+    },
   },
 };
 
