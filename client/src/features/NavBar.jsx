@@ -124,7 +124,11 @@ function NavBar() {
 
           {/* <LogInLink username={username} /> */}
           <div style={{ paddingTop: "3px" }}>
-            <img src={userphoto} alt="Seller" style={styles.profileImg} />
+            <img
+              src={`http://localhost:3002/${userphoto}`}
+              alt="Seller"
+              style={styles.profileImg}
+            />
           </div>
 
           {/* <button className="cart-btn-1">🛒 Cart</button> */}
