@@ -7,7 +7,13 @@ const router = express.Router();
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 
-router.route("/").get(authController.protect, userController.getAllusers);
+router.use(authController.protect);
+router.patch(
+  "/updateMe",
+  userController.uploadUserPhoto,
+  userController.updateMe
+);
+router.route("/").get(userController.getAllusers);
 
 router
   .route("/:id")

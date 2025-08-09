@@ -45,7 +45,7 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log("Cookie: ", req.cookies);
+  // console.log("Cookie: ", req.cookies);
   next();
 });
 
@@ -53,7 +53,10 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
-
+app.get("/:imageName", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.sendFile(path.join(__dirname, "public", req.params.imageName));
+});
 // Use all routers
 // app.get("/set-cookie", (req, res) => {
 //   res.cookie("testCookie", "hello-world", {
