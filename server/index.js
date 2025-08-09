@@ -18,6 +18,13 @@ const getProductRouter = require("./router/getProduct");
 
 // Middleware
 app.use(helmet());
+
+app.use(
+  helmet.crossOriginResourcePolicy({
+    policy: "cross-origin", // Allow other origins to load static files
+  })
+);
+
 app.use(
   cors({
     origin: "http://localhost:5173", // 👈 Your frontend's exact URL
@@ -53,22 +60,6 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
-app.get("/:imageName", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.sendFile(path.join(__dirname, "public", req.params.imageName));
-});
-// Use all routers
-// app.get("/set-cookie", (req, res) => {
-//   res.cookie("testCookie", "hello-world", {
-//     httpOnly: true,
-//     // secure: true, // enable this only when using HTTPS
-//   });
-//   res.send("Test cookie set!");
-// });
-// app.get("/z", (req, res) => {
-//   console.log("Cookies:", req.cookies);
-//   res.send("Check the console for cookies");
-// });
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/product", itemRouter);
