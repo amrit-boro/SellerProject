@@ -17,7 +17,7 @@ router
 
 router.post(
   "/addproduct",
-  authController.protect,
+  authController.SellerProtect,
   userController.uploadUserPhoto,
   async (req, res) => {
     try {

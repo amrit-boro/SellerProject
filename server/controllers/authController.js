@@ -2,6 +2,7 @@ const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
 const Seller = require("../model/sellerModel");
+const { decode } = require("punycode");
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || "90d", // <-- JWT expires in 90 days
@@ -88,6 +89,8 @@ exports.sellerLogin = async (req, res) => {
 };
 
 exports.protect = async (req, res, next) => {
+  // console.log("protect running ", req.headers);
+  // console.log("Request body: ", req.body);
   let token;
 
   // ✅ 1) Get token from Authorization header or cookie
@@ -100,7 +103,68 @@ exports.protect = async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
+  if (!token) {
+    return res.status(401).json({
+      status: "fail",
+      message: "You are not logged in! Please log in to get access.",
+    });
+  }
 
+  // ✅ 2) Verify token
+  let decoded;
+  try {
+    decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    console.log("decoded: ", decoded);
+  } catch (error) {
+    return res.status(401).json({
+      status: "fail",
+      message: "Invalid token. Please log in again.",
+    });
+  }
+
+  // ✅ 3) Check if user still exists
+  const currentUser = await User.findById(decoded.id);
+
+  if (!currentUser) {
+    return res.status(401).json({
+      status: "fail",
+      message: "The user belonging to this token no longer exists.",
+    });
+  }
+
+  // ✅ 4) Check if password changed after token issued
+  if (
+    currentUser.changePasswordAfter &&
+    currentUser.changePasswordAfter(decoded.iat)
+  ) {
+    return res.status(401).json({
+      status: "fail",
+      message: "User recently changed password! Please log in again.",
+    });
+  }
+
+  // ✅ 5) Attach user to request
+  req.user = currentUser;
+  next();
+};
+
+exports.SellerProtect = async (req, res, next) => {
+  // console.log("protect running ", req.headers);
+  // console.log("Request body: ", req.body);
+  console.log("Body fields:", req.body); // Text fields from form data
+
+  let token;
+
+  // ✅ 1) Get token from Authorization header or cookie
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+    console.log("Got the token:----------", token);
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
   if (!token) {
     return res.status(401).json({
       status: "fail",
@@ -113,6 +177,8 @@ exports.protect = async (req, res, next) => {
   try {
     decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   } catch (error) {
+    console.log("decoded: ", decoded);
+    console.log("errrr");
     return res.status(401).json({
       status: "fail",
       message: "Invalid token. Please log in again.",
@@ -120,7 +186,8 @@ exports.protect = async (req, res, next) => {
   }
 
   // ✅ 3) Check if user still exists
-  const currentUser = await User.findById(decoded.id);
+  const currentUser = await Seller.findById(decoded.id);
+
   if (!currentUser) {
     return res.status(401).json({
       status: "fail",

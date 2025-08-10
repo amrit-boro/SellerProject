@@ -6,7 +6,9 @@ const router = express.Router();
 router.post("/signup", authController.sellersignup);
 router.post("/login", authController.sellerLogin);
 
-router.route("/").get(sellerController.getAllSeller);
+router
+  .route("/")
+  .get(authController.SellerProtect, sellerController.getAllSeller);
 router
   .route("/seller-within/:distance/center/:latlng/unit/:unit")
   .get(sellerController.getSellerWithin);
