@@ -3,6 +3,7 @@ import { useProductsBySellerId } from "../user/useProduct";
 const SellerProducts = ({ sellerId }) => {
   const { data, isLoading } = useProductsBySellerId(sellerId);
   const products = data?.data?.products || [];
+  console.log("products: ", products);
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -23,6 +24,7 @@ const SellerProducts = ({ sellerId }) => {
               src={product.images?.[0]}
               alt={product.name}
             />
+
             <h4 style={{ margin: "2px" }}>{product.name}</h4>
             <p style={{ color: "green", fontWeight: "bold", margin: "4px" }}>
               ₹{product.price}

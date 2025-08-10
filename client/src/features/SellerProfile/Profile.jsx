@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import SellerProducts from "./SellerProducts";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 
 const categories = ["Electronics", "Clothing", "Home", "Toys", "Books"];
 
@@ -9,24 +11,13 @@ const Profile = () => {
   const [sellerData, setSellerData] = useState(null);
   const [showAddProductForm, setShowAddProductForm] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
-  const [fromData, setFromData] = useState({
-    name: "",
-    price: "",
-    description: "",
-    quantity: "",
-    images: [],
-    seller: "",
-    location: {
-      coordinates: [0, 0],
-      address: "",
-    },
-  });
+  const { register, handleSubmit, reset } = useForm();
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const sellerToken = localStorage.getItem("sellerToken");
+  const sellerToken = localStorage.getItem("sellerToken");
 
+  useEffect(() => {
     if (sellerToken) {
       try {
         const decoded = jwtDecode(sellerToken);
@@ -47,17 +38,61 @@ const Profile = () => {
     }
   }, []);
 
-  const handleUploader = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewImage(imageUrl);
-    }
-  };
+  console.log(sellerToken);
+  const mutation = useMutation({
+    mutationFn: async (formData) => {
+      const res = await fetch(
+        "http://localhost:3002/api/v1/product/addproduct",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${sellerToken}`, // Make sure sellerToken is a valid string token
+            Accept: "application/json",
+            // DO NOT set Content-Type when sending FormData — the browser sets it automatically with boundary
+          },
+          body: formData, //
+        }
+      );
 
-  function handleFileUpload() {
-    if (!previewImage) alert("No file");
-  }
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData?.message || "Failed to add product.");
+      }
+      return res.json();
+    },
+
+    onSuccess: () => {
+      alert("Product added succesfully");
+      reset();
+      navigate(-1);
+    },
+    onError: (error) => {
+      alert(error.response?.data?.message || error.message);
+    },
+  });
+
+  const onSubmit = (data) => {
+    const file = data.image[0]; // Get the first file
+    console.log("Selected file:", file);
+
+    if (file) {
+      console.log("File object:", file);
+      const previewUrl = URL.createObjectURL(file);
+      console.log("Preview URL:", previewUrl);
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("location", data.location);
+    formData.append("itemName", data.itemName);
+    formData.append("price", data.price);
+    formData.append("description", data.description);
+    for (const [key, value] of formData.entries()) {
+      console.log("value: ", key, value);
+    }
+
+    mutation.mutate(formData); // <-- your API call
+  };
 
   const sellerId = sellerData?._id;
   console.log("sellerId:", sellerId);
@@ -143,53 +178,97 @@ const Profile = () => {
               ✕
             </button>
 
+            {/* Upload Section */}
             <div style={design.uploadSection}>
               {!previewImage ? (
-                <>
-                  <div>
-                    <label style={{ ...design.uploadButton, zIndex: 1 }}>
-                      select from your computer
-                      <input type="file" onChange={handleUploader} hidden />
-                    </label>
-                  </div>
-                </>
+                <label style={{ ...design.uploadButton, zIndex: 1 }}>
+                  Select from your computer
+                  <input
+                    type="file"
+                    multiple={false}
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    {...register("image", {
+                      required: true,
+                      onChange: (e) => {
+                        if (e.target.files[0]) {
+                          setPreviewImage(
+                            URL.createObjectURL(e.target.files[0])
+                          );
+                        }
+                      },
+                    })}
+                  />
+                </label>
               ) : (
                 <label style={design.imageWrapper}>
-                  <div>hello</div>
                   <img
                     src={previewImage}
                     alt="Preview"
                     style={design.fullImage}
                   />
-                  <input type="file" onChange={handleUploader} hidden />
+                  <input
+                    type="file"
+                    multiple={false}
+                    accept="image/*"
+                    {...register("image", {
+                      required: true,
+                      onChange: (e) => {
+                        if (e.target.files[0]) {
+                          setPreviewImage(
+                            URL.createObjectURL(e.target.files[0])
+                          );
+                        }
+                      },
+                    })}
+                  />
                 </label>
               )}
             </div>
 
+            {/* Form Section */}
             <div style={design.formSection}>
-              <form style={design.form} onSubmit={handleFileUpload}>
+              <form style={design.form} onSubmit={handleSubmit(onSubmit)}>
                 <label style={design.label}>
                   Add item location:
-                  <input type="text" name="location" style={design.input} />
+                  <input
+                    {...register("location", { required: true })}
+                    placeholder="Location..."
+                  />
                 </label>
 
                 <label style={design.label}>
                   Add Item Name:
-                  <input type="text" name="name" style={design.input} />
+                  <input {...register("itemName", { required: true })} />
                 </label>
 
                 <label style={design.label}>
                   Add Price:
-                  <input type="number" name="price" />
+                  <input
+                    type="number"
+                    {...register("price", { required: true })}
+                  />
                 </label>
 
                 <label style={design.label}>
                   Add Item Description:
-                  <textarea name="description" style={design.textarea} />
+                  <textarea
+                    {...register("description", {
+                      required: "Description is required",
+                      minLength: {
+                        value: 10,
+                        message: "Must be at least 10 characters",
+                      },
+                      maxLength: {
+                        value: 500,
+                        message: "Must be less than 500 characters",
+                      },
+                    })}
+                  />
                 </label>
 
-                <button type="submit" style={design.submitButton}>
-                  Submit Product
+                <button type="submit" disabled={mutation?.isLoading}>
+                  {mutation?.isLoading ? "Uploading..." : "Add Product"}
                 </button>
               </form>
             </div>
