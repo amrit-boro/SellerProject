@@ -2,23 +2,26 @@ const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
 const Seller = require("../model/sellerModel");
-
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN || "5m",
+    expiresIn: process.env.JWT_EXPIRES_IN || "90d", // <-- JWT expires in 90 days
   });
 };
 
 const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id); // Create the token
+  const token = signToken(user._id);
 
   const cookieOptions = {
     expires: new Date(
       Date.now() +
-        parseInt(process.env.JWT_COOKIE_EXPIRES_IN || 90, 10) * 60 * 1000 // minutes → ms
+        parseInt(process.env.JWT_COOKIE_EXPIRES_IN || 90, 10) *
+          24 *
+          60 *
+          60 *
+          1000 // days → ms
     ),
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // true in prod only
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
   };
 
