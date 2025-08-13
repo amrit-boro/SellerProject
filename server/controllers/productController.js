@@ -299,3 +299,54 @@ exports.getDistances = async (req, res) => {
     },
   });
 };
+
+exports.addproduct = async (req, res) => {
+  try {
+    let images = [];
+
+    // Case 1: Single uploaded file
+    if (req.file) {
+      images = [`${process.env.BASE_URL}/${req.file.filename}`];
+    }
+    // Case 2: Multiple uploaded files
+    else if (req.files && req.files.length > 0) {
+      images = req.files.map(
+        (file) => `${process.env.BASE_URL}/${file.filename}`
+      );
+    }
+    // Case 3: Image URLs from JSON body
+    else if (req.body.images) {
+      if (typeof req.body.images === "string") {
+        images = [req.body.images];
+      } else {
+        images = req.body.images;
+      }
+    }
+    const locationData = req.body.location
+      ? JSON.parse(req.body.location)
+      : { type: "Point", coordinates: [0, 0], address: "", description: "" };
+
+    const productData = {
+      name: req.body.name || req.body.itemName, // support both
+      description: req.body.description,
+      price: req.body.price,
+      quantity: req.body.quantity,
+      category: req.body.category,
+      images: images,
+      seller: req.user.id, // ✅ take from token, no need to send in body
+      location: locationData,
+    };
+
+    const product = await Product.create(productData);
+    console.log("Product: ", product);
+    res.status(201).json({
+      status: "success",
+      data: product,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};

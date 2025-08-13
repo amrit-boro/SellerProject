@@ -114,7 +114,6 @@ exports.protect = async (req, res, next) => {
   let decoded;
   try {
     decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    console.log("decoded: ", decoded);
   } catch (error) {
     return res.status(401).json({
       status: "fail",
@@ -149,10 +148,6 @@ exports.protect = async (req, res, next) => {
 };
 
 exports.SellerProtect = async (req, res, next) => {
-  // console.log("protect running ", req.headers);
-  // console.log("Request body: ", req.body);
-  console.log("Body fields:", req.body); // Text fields from form data
-
   let token;
 
   // ✅ 1) Get token from Authorization header or cookie
@@ -206,7 +201,7 @@ exports.SellerProtect = async (req, res, next) => {
     });
   }
 
-  // ✅ 5) Attach user to request
+  // ✅ 5) Attach user to request.......................................
   req.user = currentUser;
   next();
 };
@@ -269,6 +264,7 @@ exports.signup = async (req, res) => {
     });
   }
 };
+
 exports.sellersignup = async (req, res) => {
   try {
     const newSeller = await Seller.create({

@@ -26,7 +26,7 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 
-exports.uploadUserPhoto = upload.single("images");
+exports.uploadUserPhoto = upload.single("image");
 
 exports.getAllusers = async (req, res) => {
   try {
