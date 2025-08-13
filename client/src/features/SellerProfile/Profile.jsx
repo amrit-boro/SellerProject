@@ -47,7 +47,6 @@ const Profile = () => {
           method: "POST",
           headers: {
             Authorization: `Bearer ${sellerToken}`, // Make sure sellerToken is a valid string token
-            Accept: "application/json",
             // DO NOT set Content-Type when sending FormData — the browser sets it automatically with boundary
           },
           body: formData, //
@@ -83,19 +82,22 @@ const Profile = () => {
 
     const formData = new FormData();
     formData.append("image", file);
-    formData.append("location", data.location);
+    formData.append(
+      "location",
+      JSON.stringify({
+        type: "Point",
+        coordinates: [91.7362, 26.1445], // longitude, latitude
+        address: data.location,
+        description: "Seller shop location",
+      })
+    );
     formData.append("itemName", data.itemName);
     formData.append("price", data.price);
     formData.append("description", data.description);
-    for (const [key, value] of formData.entries()) {
-      console.log("value: ", key, value);
-    }
-
     mutation.mutate(formData); // <-- your API call
   };
 
   const sellerId = sellerData?._id;
-  console.log("sellerId:", sellerId);
 
   return (
     <>
@@ -168,6 +170,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
       {showAddProductForm && (
         <div style={design.modalOverlay}>
           <div style={design.modalCard}>
@@ -209,7 +212,6 @@ const Profile = () => {
                   />
                   <input
                     type="file"
-                    multiple={false}
                     accept="image/*"
                     {...register("image", {
                       required: true,

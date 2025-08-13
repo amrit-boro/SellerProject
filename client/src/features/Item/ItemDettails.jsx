@@ -277,7 +277,7 @@ const styles = {
   },
   image: {
     maxWidth: "100%", // fit the container width, but don’t stretch
-    maxHeight: "300px", // limit height (adjust to your design)
+    maxHeight: "100%", // limit height (adjust to your design)
     objectFit: "cover", // or "contain" if you want to show full image
     borderRadius: "8px",
     display: "block",
