@@ -7,8 +7,6 @@ const SellerProducts = ({ sellerId }) => {
 
   if (isLoading) return <p>Loading...</p>;
 
-  const isSingle = products.length === 1;
-
   return (
     <div style={styles.gridWrapper}>
       <div

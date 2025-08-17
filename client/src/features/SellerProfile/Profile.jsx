@@ -41,6 +41,7 @@ const Profile = () => {
   }, []);
 
   console.log(sellerToken);
+
   const mutation = useMutation({
     mutationFn: async (formData) => {
       const res = await fetch(
@@ -74,13 +75,6 @@ const Profile = () => {
 
   const onSubmit = (data) => {
     const file = data.image[0]; // Get the first file
-    console.log("Selected file:", file);
-
-    if (file) {
-      console.log("File object:", file);
-      const previewUrl = URL.createObjectURL(file);
-      console.log("Preview URL:", previewUrl);
-    }
 
     const formData = new FormData();
     formData.append("image", file);
@@ -103,6 +97,7 @@ const Profile = () => {
   const sellerId = sellerData?._id;
   const sellername = sellerData?.sellerName || "Seller";
   const sellerAbout = sellerData?.sellerAbout || "No description available";
+  const sellerProfile = sellerData?.SellerProfilePic || "default.jpg";
 
   return (
     <>
@@ -129,7 +124,7 @@ const Profile = () => {
                 }}
               >
                 <img
-                  src={sellerData?.SellerProfilePic}
+                  src={sellerProfile}
                   alt="Profile"
                   style={{
                     height: "70px",
@@ -149,6 +144,7 @@ const Profile = () => {
                   isOpen={isOpen}
                   sellername={sellername}
                   sellerAbout={sellerAbout}
+                  sellerProfile={sellerProfile}
                   onClose={() => setIsOpen(false)}
                 />
               </div>

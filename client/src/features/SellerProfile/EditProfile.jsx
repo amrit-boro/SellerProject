@@ -1,32 +1,101 @@
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { set, useForm } from "react-hook-form";
 
-function EditProfile({ sellername, sellerAbout }) {
-  const [name, setName] = useState(sellername || "");
-  const [about, setAbout] = useState(sellerAbout || "");
-  const [gender, setGender] = useState("Prefer not to say");
-  const [showBadge, setShowBadge] = useState(false);
+function EditProfile({
+  sellername,
+  sellerAbout,
+  sellerProfilePic,
+  sellerGender,
+}) {
+  const { register, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      name: sellername || "",
+      about: sellerAbout || "",
+      gender: sellerGender || "Prefer not to say",
+    },
+  });
+  const sellerToken = localStorage.getItem("sellerToken");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = { name, about, gender, showBadge };
-    console.log("Form submitted:", formData);
-    // Here you would send formData to backend API
+  const [previewImage, setPreviewImage] = useState(null);
+  const mutation = useMutation({
+    mutationFn: async (formData) => {
+      const res = await fetch(
+        "http://localhost:3002/api/v1/seller/updateSeller",
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${sellerToken}`,
+          },
+          body: formData,
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Failed to update profile");
+      }
+      return res.json();
+    },
+  });
+
+  // if seller info updates dynamically, sync it
+  useEffect(() => {
+    if (sellername) setValue("name", sellername);
+    if (sellerAbout) setValue("about", sellerAbout);
+    if (sellerGender) setValue("gender", sellerGender);
+  }, [sellername, sellerAbout, sellerGender, setValue]);
+
+  const onSubmit = (data) => {
+    const file = data.image?.[0]; // should now work
+
+    console.log(data);
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("name", data.name);
+    formData.append("about", data.about);
+    mutation.mutate(formData);
   };
 
   return (
-    <form style={styles.main_container} onSubmit={handleSubmit}>
+    <form style={styles.main_container} onSubmit={handleSubmit(onSubmit)}>
       <h2 style={styles.title}>Edit Profile</h2>
 
       {/* Profile Header */}
       <div style={styles.profile_header}>
-        <div style={styles.profile_pic}></div>
+        <img
+          src={
+            previewImage || sellerProfilePic || "https://via.placeholder.com/70"
+          }
+          alt="sellerPhoto"
+          style={styles.profile_pic}
+        />
         <div style={styles.profile_info}>
           <p style={styles.username}>batto_kenshin</p>
           <span style={styles.name}>{sellername}</span>
         </div>
-        <button type="button" style={styles.btn}>
-          Change photo
-        </button>
+        <label
+          style={{
+            backgroundColor: "#3535eb",
+            padding: "10px",
+            borderRadius: "8px",
+            cursor: "pointer",
+          }}
+        >
+          Change Photo
+          <input
+            type="file"
+            style={styles.btn}
+            accept="image/*"
+            {...register("image", {
+              onChange: (e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setPreviewImage(URL.createObjectURL(file));
+                }
+              },
+            })}
+          />
+        </label>
       </div>
 
       {/* Edit name */}
@@ -35,60 +104,37 @@ function EditProfile({ sellername, sellerAbout }) {
         <input
           type="text"
           style={styles.input}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          {...register("name")}
+          placeholder="Seller Name"
         />
       </div>
 
-      {/* Bio */}
+      {/* About */}
       <div style={styles.form_group}>
         <label style={styles.label}>About</label>
         <textarea
           style={styles.textarea}
           rows="2"
           maxLength="150"
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
+          {...register("about")}
+          placeholder="Tell us about yourself"
         />
-        <small style={styles.note}>{about.length} / 150</small>
-      </div>
-
-      {/* Show Threads Badge */}
-      <div style={styles.form_group}>
-        <label style={styles.label}>Show Threads badge</label>
-        <div
-          style={{
-            ...styles.toggle,
-            background: showBadge ? "#4b6ef5" : "#333",
-          }}
-          onClick={() => setShowBadge(!showBadge)}
-        >
-          <div
-            style={{
-              ...styles.toggle_circle,
-              left: showBadge ? "34px" : "2px",
-            }}
-          ></div>
-        </div>
-      </div>
-
-      {/* Gender */}
-      <div style={styles.form_group}>
-        <label style={styles.label}>Gender</label>
-        <select
-          style={styles.input}
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-        >
-          <option>Prefer not to say</option>
-          <option>Male</option>
-          <option>Female</option>
-          <option>Other</option>
-        </select>
+        {/* Word count can be handled using watch if you want live updates */}
       </div>
 
       {/* Submit Button */}
-      <button type="submit" style={{ ...styles.btn, marginTop: "20px" }}>
+      <button
+        type="submit"
+        style={{
+          backgroundColor: "#3535eb",
+          padding: "10px",
+          cursor: "pointer",
+          borderRadius: "8px",
+          marginTop: "20px",
+          color: "white",
+          border: "none",
+        }}
+      >
         Save Changes
       </button>
     </form>
@@ -107,11 +153,7 @@ const styles = {
     boxSizing: "border-box",
     borderRadius: "12px",
   },
-  title: {
-    marginBottom: "20px",
-    fontSize: "20px",
-    fontWeight: "bold",
-  },
+  title: { marginBottom: "20px", fontSize: "20px", fontWeight: "bold" },
   profile_header: {
     display: "flex",
     alignItems: "center",
@@ -124,30 +166,13 @@ const styles = {
     width: "70px",
     height: "70px",
     borderRadius: "50%",
-    background: "url('https://via.placeholder.com/70') center/cover no-repeat",
     marginRight: "15px",
+    objectFit: "cover",
   },
   profile_info: { flex: 1 },
-  username: {
-    margin: 0,
-    fontWeight: "bold",
-    fontSize: "16px",
-  },
-  name: {
-    fontSize: "14px",
-    color: "#aaa",
-  },
-  btn: {
-    background: "#4b6ef5",
-    border: "none",
-    padding: "10px 18px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontSize: "14px",
-    fontWeight: "bold",
-    color: "white",
-    flexShrink: 0,
-  },
+  username: { margin: 0, fontWeight: "bold", fontSize: "16px" },
+  name: { fontSize: "14px", color: "#aaa" },
+  btn: { display: "none" },
   form_group: { marginBottom: "20px" },
   label: { display: "flex", fontSize: "14px", marginBottom: "6px" },
   input: {
@@ -171,24 +196,6 @@ const styles = {
     color: "white",
     fontSize: "14px",
     boxSizing: "border-box",
-  },
-  note: { display: "block", marginTop: "6px", fontSize: "12px", color: "#aaa" },
-  toggle: {
-    width: "60px",
-    height: "28px",
-    background: "#333",
-    borderRadius: "14px",
-    position: "relative",
-    cursor: "pointer",
-  },
-  toggle_circle: {
-    width: "24px",
-    height: "24px",
-    background: "white",
-    borderRadius: "50%",
-    position: "absolute",
-    top: "2px",
-    transition: "0.3s",
   },
 };
 

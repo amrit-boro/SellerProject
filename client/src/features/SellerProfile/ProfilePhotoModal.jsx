@@ -1,6 +1,12 @@
 import EditProfile from "./EditProfile";
 
-function ProfilePhotoModal({ isOpen, onClose, sellername, sellerAbout }) {
+function ProfilePhotoModal({
+  isOpen,
+  onClose,
+  sellername,
+  sellerAbout,
+  sellerProfile,
+}) {
   if (!isOpen) return null;
 
   return (
@@ -9,7 +15,11 @@ function ProfilePhotoModal({ isOpen, onClose, sellername, sellerAbout }) {
         <button style={styles.closeButton} onClick={onClose}>
           ×
         </button>
-        <EditProfile sellername={sellername} sellerAbout={sellerAbout} />
+        <EditProfile
+          sellername={sellername}
+          sellerAbout={sellerAbout}
+          sellerProfilePic={sellerProfile}
+        />
       </div>
     </div>
   );
