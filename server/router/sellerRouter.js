@@ -5,6 +5,11 @@ const router = express.Router();
 
 router.post("/signup", authController.sellersignup);
 router.post("/login", authController.sellerLogin);
+router.patch(
+  "/updateSeller",
+  authController.SellerProtect,
+  sellerController.updataSeller
+);
 
 router
   .route("/")
@@ -13,9 +18,6 @@ router
   .route("/seller-within/:distance/center/:latlng/unit/:unit")
   .get(sellerController.getSellerWithin);
 
-router
-  .route("/:id")
-  .get(sellerController.getSeller)
-  .patch(sellerController.updataSeller);
+router.route("/:id").get(sellerController.getSeller);
 
 module.exports = router;
