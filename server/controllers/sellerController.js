@@ -1,4 +1,33 @@
+const { filter } = require("compression");
 const Seller = require("../model/sellerModel");
+const multer = require("multer");
+
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/sellerPhoto");
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split("/")[1];
+    cb(null, `seller-${req.user.id}-${Date.now()}.${ext}`);
+  },
+});
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    const err = new Error("Only image files are allowed!");
+    err.statusCode = 400; // Bad Request
+    cb(err, false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadSellerPhoto = upload.single("SellerProfilePic");
 
 exports.getAllSeller = async (req, res) => {
   try {
@@ -54,8 +83,35 @@ exports.getSeller = async (req, res) => {
 };
 
 exports.updataSeller = async (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
+
+  const seller_id = req.user.id;
+
   try {
-    const seller = await Seller.findByIdAndUpdate(req.params.id, req.body);
+    if (req.file) {
+      image = `${process.env.BASE_URL}/sellerPhoto/${req.file.filename}`;
+    } else if (req.files && req.files.length > 0) {
+      image = `${process.env.BASE_URL}/sellerPhoto/${req.files[0].filename}`; // take first
+    } else if (req.body.images) {
+      if (typeof req.body.images === "string") {
+        image = req.body.images;
+      } else {
+        image = req.body.images[0]; // first one
+      }
+    }
+
+    const updateData = {
+      sellerName: req.body.sellerName,
+      sellerAbout: req.body.sellerAbout,
+
+      SellerProfilePic: image,
+    };
+
+    const seller = await Seller.findByIdAndUpdate(seller_id, updateData, {
+      new: true,
+    });
+
     res.status(201).json({
       status: "success",
       data: {
@@ -65,7 +121,7 @@ exports.updataSeller = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       status: "fail",
-      message: error,
+      message: error.message,
     });
   }
 };

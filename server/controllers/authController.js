@@ -148,6 +148,8 @@ exports.protect = async (req, res, next) => {
 };
 
 exports.SellerProtect = async (req, res, next) => {
+  console.log("SellerProtect running ");
+  console.log("Request body: ", req.headers);
   let token;
 
   // ✅ 1) Get token from Authorization header or cookie
@@ -202,6 +204,7 @@ exports.SellerProtect = async (req, res, next) => {
   }
 
   // ✅ 5) Attach user to request.......................................
+
   req.user = currentUser;
   next();
 };
