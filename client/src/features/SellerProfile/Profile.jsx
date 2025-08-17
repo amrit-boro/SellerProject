@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
+import { Pencil } from "lucide-react";
+import ProfilePhotoModal from "./ProfilePhotoModal";
 
 const categories = ["Electronics", "Clothing", "Home", "Toys", "Books"];
 
@@ -96,8 +98,11 @@ const Profile = () => {
     formData.append("description", data.description);
     mutation.mutate(formData); // <-- your API call
   };
+  const [isOpen, setIsOpen] = useState(false);
 
   const sellerId = sellerData?._id;
+  const sellername = sellerData?.sellerName || "Seller";
+  const sellerAbout = sellerData?.sellerAbout || "No description available";
 
   return (
     <>
@@ -114,20 +119,41 @@ const Profile = () => {
             <p>Loading...</p>
           ) : (
             <div style={styles.profileSection}>
-              <img
-                src={sellerData?.SellerProfilePic}
-                alt="Profile"
+              <div
                 style={{
-                  height: "70px",
-                  width: "70px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  border: "2px solid #ccc",
-                  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "10px",
                 }}
-              />
-              <p>{sellerData?.sellerName}</p>
-              <p>About: {sellerData?.sellerAbout}</p>
+              >
+                <img
+                  src={sellerData?.SellerProfilePic}
+                  alt="Profile"
+                  style={{
+                    height: "70px",
+                    width: "70px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    border: "2px solid #ccc",
+                    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
+                  }}
+                />
+                <Pencil
+                  size={20}
+                  style={styles.pencil}
+                  onClick={() => setIsOpen(true)}
+                />
+                <ProfilePhotoModal
+                  isOpen={isOpen}
+                  sellername={sellername}
+                  sellerAbout={sellerAbout}
+                  onClose={() => setIsOpen(false)}
+                />
+              </div>
+              <p>{sellername}</p>
+              <p>About: {sellerAbout}</p>
               <p>My ratings: ⭐ {sellerData?.rating || "4.5"}</p>
             </div>
           )}
@@ -286,6 +312,19 @@ const styles = {
     display: "flex",
     height: "100vh",
     fontFamily: "Arial, sans-serif",
+  },
+  pencil: {
+    width: `20px`,
+    height: "20px",
+    borderRadius: "30%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ebe4e4",
+    border: "1px solid rgba(0,0,0,0.1)",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+    cursor: "pointer",
+    transition: "transform 0.15s ease, box-shadow 0.2s ease",
   },
   sidebar: {
     width: "70vh",

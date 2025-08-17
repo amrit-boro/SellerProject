@@ -7,7 +7,6 @@ function ItemDetails({
   description,
   sellerProfile,
   Location,
-
   price,
   _id,
   username,
@@ -27,7 +26,6 @@ function ItemDetails({
       navigate(`/borrow/${_id}`, {
         state: {
           images,
-
           username,
           sellerProfilePic,
           sellerName,
@@ -40,24 +38,24 @@ function ItemDetails({
     }
   }
 
-  function handleToggle() {
-    navigate(`/profile/${sellerName}/${_id}`, {
-      state: {
-        sellerName,
-        sellerProfilePic,
-        sellerLocation,
-        sellerEmail,
-        sellerPhone,
-      },
-    });
-  }
-
   function handleImageClick() {
     setShowImageModal(true);
   }
 
   function handleCloseModal() {
     setShowImageModal(false);
+  }
+  function handleToggle() {
+    navigate(`/profile/${sellerName}/${_id}`, {
+      state: {
+        sellerName,
+        sellerAbout,
+        sellerProfilePic,
+        sellerLocation,
+        sellerEmail,
+        sellerPhone,
+      },
+    });
   }
 
   useEffect(() => {
@@ -78,6 +76,7 @@ function ItemDetails({
   const sellerEmail = sellerProfile?.sellerEmail;
   const sellerPhone = sellerProfile?.sellerPhone;
   const sellerAddress = sellerProfile?.sellerAddress;
+  const sellerAbout = sellerProfile?.sellerAbout || "No description available";
 
   return (
     <div style={styles.container}>
@@ -120,6 +119,7 @@ function ItemDetails({
 
         <div style={styles.title}>
           {description.slice(0, 196) + ""}
+
           {show ? (
             <span>
               {description.slice(196)}{" "}

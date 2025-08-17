@@ -39,6 +39,7 @@ function VisitProfile() {
     sellerLocation,
     sellerEmail,
     sellerPhone,
+    sellerAbout,
   } = location.state;
 
   function handleImageClick() {
@@ -81,10 +82,7 @@ function VisitProfile() {
               onClick={handleImageClick}
             />
             <h2>{sellerName}</h2>
-            <p>
-              % I sell beautiful handmade crafts, kitchenware, and home
-              accessories. %
-            </p>
+            <p>{sellerAbout}</p>
             <p className="visit-location">{sellerLocation}</p>
             <p className="visit-rating">
               ⭐ 4.7 <span>(128 reviews)</span>

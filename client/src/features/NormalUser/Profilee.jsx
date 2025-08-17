@@ -14,7 +14,7 @@ function Profilee() {
 
   const username = useSelector((state) => state.user.username);
   const x = location.state;
-  console.log("values: ", x);
+  console.log(x);
   const { images, price, description, sellerProfile, Location, _id } =
     location.state;
 
