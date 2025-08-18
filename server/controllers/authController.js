@@ -148,8 +148,6 @@ exports.protect = async (req, res, next) => {
 };
 
 exports.SellerProtect = async (req, res, next) => {
-  console.log("SellerProtect running ");
-  console.log("Request body: ", req.headers);
   let token;
 
   // ✅ 1) Get token from Authorization header or cookie

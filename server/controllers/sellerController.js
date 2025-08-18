@@ -27,7 +27,7 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 
-exports.uploadSellerPhoto = upload.single("SellerProfilePic");
+exports.uploadSellerPhoto = upload.single("image");
 
 exports.getAllSeller = async (req, res) => {
   try {
@@ -83,9 +83,6 @@ exports.getSeller = async (req, res) => {
 };
 
 exports.updataSeller = async (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
-
   const seller_id = req.user.id;
 
   try {
@@ -102,8 +99,8 @@ exports.updataSeller = async (req, res) => {
     }
 
     const updateData = {
-      sellerName: req.body.sellerName,
-      sellerAbout: req.body.sellerAbout,
+      sellerName: req.body.name,
+      sellerAbout: req.body.about,
 
       SellerProfilePic: image,
     };

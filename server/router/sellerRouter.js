@@ -1,11 +1,11 @@
 const express = require("express");
 const sellerController = require("../controllers/sellerController");
 const authController = require("../controllers/authController");
-const userControlle = require("../controllers/userControllers");
 const router = express.Router();
 
 router.post("/signup", authController.sellersignup);
 router.post("/login", authController.sellerLogin);
+
 router.patch(
   "/updateSeller",
   authController.SellerProtect,
