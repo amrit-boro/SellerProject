@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { set, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 function EditProfile({
   sellername,
@@ -8,7 +9,7 @@ function EditProfile({
   sellerProfilePic,
   sellerGender,
 }) {
-  const { register, handleSubmit, setValue } = useForm({
+  const { register, handleSubmit, setValue, reset } = useForm({
     defaultValues: {
       name: sellername || "",
       about: sellerAbout || "",
@@ -16,8 +17,9 @@ function EditProfile({
     },
   });
   const sellerToken = localStorage.getItem("sellerToken");
-
   const [previewImage, setPreviewImage] = useState(null);
+  const navigate = useNavigate();
+
   const mutation = useMutation({
     mutationFn: async (formData) => {
       const res = await fetch(
@@ -35,6 +37,12 @@ function EditProfile({
       }
       return res.json();
     },
+    onSuccess: () => {
+      navigate(-1);
+    },
+    onError: (error) => {
+      alert(error.response?.data?.message || error.message);
+    },
   });
 
   // if seller info updates dynamically, sync it
@@ -46,9 +54,6 @@ function EditProfile({
 
   const onSubmit = (data) => {
     const file = data.image?.[0]; // should now work
-
-    console.log(data);
-
     const formData = new FormData();
     formData.append("image", file);
     formData.append("name", data.name);
