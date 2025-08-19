@@ -84,6 +84,7 @@ exports.getSeller = async (req, res) => {
 
 exports.updataSeller = async (req, res) => {
   const seller_id = req.user.id;
+  console.log("body:::: ...............", req.body);
 
   try {
     if (req.file) {
