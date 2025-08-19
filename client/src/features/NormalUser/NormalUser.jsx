@@ -42,7 +42,7 @@ function NormalUser() {
   console.log("SearchProducts:", searchProducts);
 
   const minOptions = ["100", "200", "350", "2000"];
-  const maxOptions = ["1000", "1500", "3000", "5000"];
+  const maxOptions = ["500", "1500", "3000", "5000"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
