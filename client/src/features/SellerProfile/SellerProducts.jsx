@@ -1,13 +1,27 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProductsBySellerId } from "../user/useProduct";
+import axios from "axios";
 
 const SellerProducts = ({ sellerId }) => {
   const { data, isLoading } = useProductsBySellerId(sellerId);
+  const queryClient = useQueryClient();
   const products = data?.data?.products || [];
-  console.log("products: ", products);
+  const sellerToken = localStorage.getItem("sellerToken");
+  const { mutate, isError, error } = useMutation({
+    mutationFn: (id) =>
+      axios.delete(`http://localhost:3002/api/v1/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${sellerToken}`,
+        },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries["getAllsellerProductsById"];
+    },
+  });
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this item ?")) {
-      alert(id);
+      mutate(id);
     }
   };
 
