@@ -123,12 +123,26 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
-    res.status(201).json({
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Product not found",
+      });
+    }
+
+    if (product.seller.toString() !== req.user.id) {
+      return res.status(400).json({
+        status: "fail",
+        message: "You can delete your own products",
+      });
+    }
+
+    await product.deleteOne();
+    res.status(200).json({
       status: "success",
-      data: {
-        product,
-      },
+      message: "Product deleted successfuly",
     });
   } catch (error) {
     res.status(404).json({
