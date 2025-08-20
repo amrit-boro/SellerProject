@@ -10,7 +10,7 @@ router.patch(
   "/updateSeller",
   authController.SellerProtect,
   sellerController.uploadSellerPhoto,
-  sellerController.updataSeller
+  sellerController.updateSeller
 );
 
 router

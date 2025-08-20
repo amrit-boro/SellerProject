@@ -82,11 +82,13 @@ exports.getSeller = async (req, res) => {
   }
 };
 
-exports.updataSeller = async (req, res) => {
+exports.updateSeller = async (req, res) => {
   const seller_id = req.user.id;
   console.log("body:::: ...............", req.body);
 
   try {
+    let image;
+
     if (req.file) {
       image = `${process.env.BASE_URL}/sellerPhoto/${req.file.filename}`;
     } else if (req.files && req.files.length > 0) {
@@ -99,12 +101,16 @@ exports.updataSeller = async (req, res) => {
       }
     }
 
+    // Build update object dynamically
     const updateData = {
       sellerName: req.body.name,
       sellerAbout: req.body.about,
-
-      SellerProfilePic: image,
     };
+
+    // Only add profilePic if new image is provided
+    if (image) {
+      updateData.SellerProfilePic = image;
+    }
 
     const seller = await Seller.findByIdAndUpdate(seller_id, updateData, {
       new: true,

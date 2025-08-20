@@ -3,6 +3,7 @@ const productController = require("../controllers/productController");
 const authController = require("../controllers/authController");
 const userController = require("../controllers/userControllers");
 const Product = require("../model/productModel");
+const sellerController = require("../controllers/sellerController");
 const { route } = require("..");
 
 const router = express.Router();
@@ -38,6 +39,6 @@ router
   .route("/:id")
   .get(productController.getProduct)
   .patch(productController.updateProduct)
-  .delete(productController.deleteProduct);
+  .delete(authController.SellerProtect, productController.deleteProduct);
 
 module.exports = router;
