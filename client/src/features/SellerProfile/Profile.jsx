@@ -141,6 +141,7 @@ const Profile = () => {
                   onClick={() => setIsOpen(true)}
                 />
                 <ProfilePhotoModal
+                  setIsOpen={setIsOpen}
                   isOpen={isOpen}
                   sellername={sellername}
                   sellerAbout={sellerAbout}

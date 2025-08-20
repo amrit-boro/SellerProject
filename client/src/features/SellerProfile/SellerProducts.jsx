@@ -5,6 +5,12 @@ const SellerProducts = ({ sellerId }) => {
   const products = data?.data?.products || [];
   console.log("products: ", products);
 
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this item ?")) {
+      alert(id);
+    }
+  };
+
   if (isLoading) return <p>Loading...</p>;
 
   return (
@@ -27,7 +33,15 @@ const SellerProducts = ({ sellerId }) => {
             <p style={{ color: "green", fontWeight: "bold", margin: "4px" }}>
               ₹{product.price}
             </p>
-            <button style={styles.viewBtn}>View</button>
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <button style={styles.viewBtn}>View</button>
+              <button
+                style={styles.delviewBtn}
+                onClick={() => handleDelete(product._id)}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -73,12 +87,22 @@ const styles = {
   },
 
   viewBtn: {
-    background: "yellow",
-    padding: "8px 8px",
+    background: "#46d12e",
+    padding: "8px 25px",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
     fontWeight: "bold",
+    color: "white",
+  },
+  delviewBtn: {
+    background: "#e63946",
+    padding: "8px 25px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    color: "#e3e1e1",
   },
 };
 

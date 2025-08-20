@@ -6,6 +6,7 @@ function ProfilePhotoModal({
   sellername,
   sellerAbout,
   sellerProfile,
+  setIsOpen,
 }) {
   if (!isOpen) return null;
 
@@ -19,6 +20,7 @@ function ProfilePhotoModal({
           sellername={sellername}
           sellerAbout={sellerAbout}
           sellerProfilePic={sellerProfile}
+          setIsOpen={setIsOpen}
         />
       </div>
     </div>

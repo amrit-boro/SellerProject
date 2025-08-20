@@ -8,6 +8,7 @@ function EditProfile({
   sellerAbout,
   sellerProfilePic,
   sellerGender,
+  setIsOpen,
 }) {
   const { register, handleSubmit, setValue, reset } = useForm({
     defaultValues: {
@@ -38,7 +39,7 @@ function EditProfile({
       return res.json();
     },
     onSuccess: () => {
-      navigate(-1);
+      reset();
     },
     onError: (error) => {
       alert(error.response?.data?.message || error.message);
