@@ -15,6 +15,7 @@ import Borrow from "./features/Item/Borrow";
 import VisitProfile from "./features/ui/VisitProfile";
 import SellerLongin from "./features/authentication/SellerLogin";
 import EditProfile from "./features/ui/EditProfile";
+import AccountPage from "./features/NormalUser/AccountPage";
 // import Search from "./features/Item/Search";
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/search",
     element: <NomalUser />,
+  },
+  {
+    path: "/accountPage",
+    element: <AccountPage />,
   },
   {
     path: "/:id",
@@ -48,10 +53,6 @@ const router = createBrowserRouter([
     path: "/sellerprofile",
     element: <Profile />,
   },
-  // {
-  //   path: "/addproduct",
-  //   element: <Addproduct />,
-  // },
   {
     path: "/sellerprofile/editsellerProfile",
     element: <EditProfile />,

@@ -96,6 +96,15 @@ export const fetchSeller = async (id) => {
   return data;
 };
 
+//
+export const fetchProductById = async (id) => {
+  const res = await fetch(`http://localhost:3002/api/v1/product/${id}`);
+  if (!res.ok)
+    throw new Error("something went wrong with fetching the data ):");
+  const data = await res.json();
+  return data;
+};
+
 export const fetchLoggedInUser = async () => {
   const token = localStorage.getItem("token");
 

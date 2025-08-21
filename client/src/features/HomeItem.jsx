@@ -32,7 +32,7 @@ function HomeItem({ item }) {
 
   return (
     <>
-      <div className="product-card" onClick={handleClick}>
+      <div className="product-card">
         <img src={images} alt={itemName} />
         <h3>{itemName}</h3>
         <span style={{ fontWeight: "bold", fontSize: "1.01rem" }}>
@@ -41,7 +41,9 @@ function HomeItem({ item }) {
         <span style={{ fontSize: "15px" }}>{address}</span>
         <p className="rating">{"⭐".repeat(4)}</p>
         <p className="price">${price}</p>
-        <button className="add-btn">View </button>
+        <button className="add-btn" onClick={handleClick}>
+          View{" "}
+        </button>
       </div>
     </>
   );

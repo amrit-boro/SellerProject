@@ -19,7 +19,7 @@ function ItemDetails({
 
   function handleBorrow() {
     const token = localStorage.getItem("token");
-    console.log("token: ", token);
+
     if (!token) {
       navigate("/login");
     } else {
@@ -32,6 +32,7 @@ function ItemDetails({
           sellerPhone,
           sellerEmail,
           price,
+          description,
           _id,
         },
       });

@@ -7,7 +7,7 @@ import LogInLink from "./authentication/LogInLink";
 import "react-loading-skeleton/dist/skeleton.css";
 import { navlist } from "./ui/navlist";
 import { jwtDecode } from "jwt-decode";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   updateUserEmail,
   updateUserName,
@@ -15,6 +15,8 @@ import {
 } from "./user/userSlice";
 
 function NavBar() {
+  const [hover, setHover] = useState(false);
+
   const searchname = useSelector((state) => state.search.searchName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -24,13 +26,13 @@ function NavBar() {
     (state) => state.seller.sellerProfilePic
   );
 
-  function handleSearch(e) {
-    if (e.key == "Enter" && searchname.trim()) {
-      // Navigate to new URL with search query
-      dispatch(updateSearchName(searchname));
-      navigate(`/search?name=${searchname}`);
-    }
-  }
+  // function handleSearch(e) {
+  //   if (e.key == "Enter" && searchname.trim()) {
+  //     // Navigate to new URL with search query
+  //     dispatch(updateSearchName(searchname));
+  //     navigate(`/search?name=${searchname}`);
+  //   }
+  // }
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -85,59 +87,57 @@ function NavBar() {
   return (
     <>
       <header className="top-bar2">
-        {/* <div className="logo2">ShopeZone</div> */}
         <Link className="logo2" to={"/"}>
           ShopZone
         </Link>
-        {/* 
-        <div className="search-container">
-          <input
-            type="text"
-            value={searchname}
-            onChange={(e) => dispatch(updateSearchName(e.target.value))}
-            onKeyDown={handleSearch}
-            placeholder="Search for products..."
-          />
-          <button className="search-button">🔍</button>
-        </div> */}
 
         <div className="header-buttons">
           {/* Seller */}
-
-          <div
-            onClick={handleClick}
-            style={{ cursor: "pointer", marginRight: "15px" }}
-          >
+          <div className="seller-btn" onClick={handleClick}>
             {isAuthenticate ? "Seller" : "Become a Seller"}
           </div>
 
-          <Link
-            style={{
-              textDecoration: "None",
-              color: "white",
-              marginRight: "15px",
-            }}
-            to={"/login"}
-          >
-            {username ? ` ${username}` : "Login / SignUp"}
-          </Link>
+          {/* Login / User Dropdown */}
+          <div className="userlogin-container">
+            <Link className="login-link" to={"/login"}>
+              {username ? `${username} ▼` : "Login / SignUp"}
+            </Link>
 
-          {/* <LogInLink username={username} /> */}
-          <div style={{ paddingTop: "3px" }}>
+            <div className="dropdown">
+              {username ? (
+                <>
+                  <Link className="dropdown-item" to={"/accountPage"}>
+                    Profile
+                  </Link>
+                  <div className="dropdown-item">Settings</div>
+                  <div className="dropdown-item">Logout</div>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="dropdown-item">
+                    Login
+                  </Link>
+                  <Link to="/signup" className="dropdown-item">
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Profile Image */}
+          <div className="profile-img-wrapper">
             <img
               src={`http://localhost:3002/${userphoto}`}
               alt="Seller"
-              style={styles.profileImg}
+              className="profile-img"
             />
           </div>
-
-          {/* <button className="cart-btn-1">🛒 Cart</button> */}
         </div>
       </header>
 
       <nav className="nav-bar2">
         <button className="nav-all2">= All</button>
-
         {navlist.map((item) => (
           <Navbarlist item={item} key={item.length} />
         ))}
@@ -145,14 +145,5 @@ function NavBar() {
     </>
   );
 }
-
-const styles = {
-  profileImg: {
-    width: "30px",
-    height: "30px",
-    borderRadius: "50%",
-    marginRight: "15px",
-  },
-};
 
 export default NavBar;

@@ -233,20 +233,6 @@ const Profile = () => {
                     alt="Preview"
                     style={design.fullImage}
                   />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    {...register("image", {
-                      required: true,
-                      onChange: (e) => {
-                        if (e.target.files[0]) {
-                          setPreviewImage(
-                            URL.createObjectURL(e.target.files[0])
-                          );
-                        }
-                      },
-                    })}
-                  />
                 </label>
               )}
             </div>
@@ -397,7 +383,7 @@ const design = {
   fullImage: {
     width: "100%",
     height: "100%",
-    objectFit: "contain",
+    objectFit: "cover",
     display: "block",
   },
 

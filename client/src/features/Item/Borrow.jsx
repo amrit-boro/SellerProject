@@ -1,23 +1,16 @@
 import { useState } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useNavigate, Link, useLocation, useParams } from "react-router-dom";
 
 function Borrow() {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    userId: "",
-    email: "",
-    phoneNumber: "",
-    itemName: "",
-    itemId: "",
-    borrowDate: "",
-    purpose: "",
-    agreeTerms: false,
-  });
-
+  const { register, handleSubmit } = useForm();
+  const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
   // lOCATION...................................................................................
+  const x = location.state;
+  console.log(x);
   const {
     images,
     itemName,
@@ -36,20 +29,9 @@ function Borrow() {
   // const sellerPhone = sellerProfile.sellerPhone;
   // const sellerEmail = sellerProfile.sellerEmail;
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.fullName) return;
-
-    console.log("Borrow Request Submitted:", formData);
-    // Add validation or send to server
+  const onSubmit = (data) => {
+    console.log(data);
+    navigate("/");
   };
   function handleToggle() {
     navigate(`/profile/${sellerName}/${_id}`, {
@@ -62,6 +44,8 @@ function Borrow() {
     });
   }
 
+  const today = new Date().toISOString().split("T")[0];
+
   return (
     <>
       <header className="top-bar2" style={styles.header}>
@@ -72,7 +56,7 @@ function Borrow() {
         <div className="account2"> {username}</div>
       </header>
 
-      <form style={styles.flexWrapper} onSubmit={handleSubmit}>
+      <form style={styles.flexWrapper} onSubmit={handleSubmit(onSubmit)}>
         {/* Left: Product Image */}
         <div style={styles.imageContainer}>
           <img src={images} alt="Product" style={styles.productImage} />
@@ -116,65 +100,66 @@ function Borrow() {
               <img
                 style={{ height: "50px", width: "50px", borderRadius: "50%" }}
                 src={sellerProfilePic}
-                alt="Amrita"
+                alt="seller"
               />
               <h3 style={styles.nameheading}>{sellerName}</h3>
             </div>
           </div>
-          <label style={styles.label}>Full Name</label>
-          <input
-            style={styles.input}
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            required
-          />
-          <label style={styles.label}>Email</label>
-          <input
-            style={styles.input}
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <label style={styles.label}>Phone Number</label>
-          <input
-            style={styles.input}
-            type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-          />{" "}
-          <label style={styles.label}>Borrow Date</label>
-          <input
-            style={styles.input}
-            type="date"
-            name="borrowDate"
-            value={formData.borrowDate}
-            onChange={handleChange}
-            required
-          />{" "}
-          <label style={styles.label}>Purpose of Borrowing</label>
-          <textarea
-            style={{ ...styles.input, resize: "vertical", height: "60px" }}
-            name="purpose"
-            rows="3"
-            value={formData.purpose}
-            onChange={handleChange}
-            placeholder="Describe purpose (optional)"
-            required
-          />
-          <div style={styles.checkboxContainer}>
+          <label style={styles.label}>
+            Full Name
             <input
-              type="checkbox"
-              name="agreeTerms"
-              checked={formData.agreeTerms}
-              onChange={handleChange}
-              required
+              style={styles.input}
+              type="text"
+              {...register("fullname", { required: "This field is required" })}
             />
+          </label>
+          <label style={styles.label}>
+            Email
+            <input
+              style={styles.input}
+              type="email"
+              {...register("email", { required: "email is required" })}
+            />
+          </label>
+          <label style={styles.label}>
+            Phone Number
+            <input
+              style={styles.input}
+              type="tel"
+              {...register("tel", { required: "Phone no is required" })}
+            />
+          </label>
+          <div style={{ display: "flex", gap: "20px" }}>
+            <label style={styles.label}>
+              Borrow Date:
+              <input
+                style={styles.input}
+                type="date"
+                defaultValue={today}
+                {...register("Currentdate", { required: "Date is required" })}
+              />
+            </label>
+            <label style={styles.label}>
+              Return Date:
+              <input
+                type="date"
+                style={styles.input}
+                {...register("retunDate", { required: "Returd date required" })}
+              />
+            </label>
+          </div>
+          <label style={styles.label}>
+            Purpose of Borrowing
+            <textarea
+              style={{ ...styles.input, resize: "vertical", height: "60px" }}
+              name="purpose"
+              rows="3"
+              {...register("purpose", { required: "Purpose is required" })}
+              placeholder="Describe purpose"
+            />
+          </label>
+          <div style={styles.checkboxContainer}>
+            <input type="checkbox" {...register("agree")} />
             <label style={{ fontSize: "13px" }}>
               I agree to the terms and conditions
             </label>
@@ -240,6 +225,7 @@ const styles = {
   formContainer: {
     width: "70%",
     padding: "20px 25px",
+    backgroundColor: "#e3e2e2",
   },
   heading: {
     position: "absolute",

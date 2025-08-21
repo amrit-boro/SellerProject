@@ -1477,3 +1477,177 @@ header {
 .borrow-form button:hover {
   background-color: #0f5cc3;
 }
+
+/* ................................................. */
+
+/* Seller Button */
+.seller-btn {
+  cursor: pointer;
+  margin-right: 15px;
+  color: white;
+}
+
+/* Login + Dropdown */
+.userlogin-container {
+  position: relative;
+  margin-right: 15px;
+}
+
+.login-link {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Dropdown hidden by default */
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 150px;
+  z-index: 1000;
+}
+
+/* Show dropdown on hover */
+.userlogin-container:hover .dropdown {
+  display: block;
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: block;
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Profile Image */
+.profile-img-wrapper {
+  padding-top: 3px;
+}
+
+.profile-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+/* Accout page style........................................ */
+
+.account-container {
+  display: flex;
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.account_sidebar {
+  width: 260px;
+  background: #fff;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.account_avatar {
+  width: 50px;
+  height: 50px;
+  background: #ffcc00;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.hello {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+.name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.account_sidebar-section {
+  margin-bottom: 20px;
+}
+.account_sidebar-section h4 {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+.account_sidebar-section ul {
+  list-style: none;
+  padding: 0;
+}
+.account_sidebar-section li {
+  padding: 6px 0;
+  cursor: pointer;
+}
+.account_sidebar-section li.active {
+  color: #2874f0;
+  font-weight: bold;
+}
+.green {
+  color: green;
+  margin-left: 5px;
+}
+
+/* Content */
+.content {
+  flex: 1;
+  padding: 30px;
+  background: #fff;
+}
+
+.account_section {
+  margin-bottom: 30px;
+}
+
+.account_section h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.edit {
+  font-size: 14px;
+  color: #2874f0;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.form-row {
+  margin: 10px 0;
+}
+.form-row input[type="text"] {
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.faq p {
+  margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 1.5;
+}

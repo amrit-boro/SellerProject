@@ -7,6 +7,7 @@ import {
   fetchSeller,
   fetchLoggedInUser,
   fetchAllSellerProductsBySellerId,
+  fetchProductById,
 } from "./product";
 import { fetchSearchProducts } from "./product";
 import { useDispatch } from "react-redux";
@@ -71,6 +72,14 @@ export function useSeller(id) {
     queryFn: () => fetchSeller(id),
   });
 }
+
+export function useProduct(id) {
+  return useQuery({
+    queryKey: ["getProduct", id],
+    queryFn: () => fetchProductById(id),
+  });
+}
+
 export function useLoggedInUser() {
   return useQuery({
     queryKey: ["userLoggedIn"],
