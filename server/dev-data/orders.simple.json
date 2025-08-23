@@ -1,0 +1,28 @@
+{
+  "user": "687f8e2ee76a0df8dd5a9d5c",
+  "items": [
+    {
+      "product": "688ee876e65bd492fb0bdae9",
+      "name": "Realme P3 5g",
+      "quantity": 1,
+      "price": 900
+    }
+  ],
+
+  "shippingDetails": {
+    "fullName": "Amrit Boro",
+    "email": "amrit@example.com",
+    "phone": "9876543210",
+    "address1": "House No 12, Jayguru Kalipahar Amingaon",
+    "city": "Guwahati",
+    "state": "Assam",
+    "postalCode": "781031",
+    "country": "India",
+    "purpose": "Personal use"
+  },
+
+  "paymentMethod": "Card",
+  "status": "Pending",
+  "orderDate": "2025-08-23T09:55:12.000Z",
+  "returnDate": "2025-09-02T09:55:12.000Z"
+}

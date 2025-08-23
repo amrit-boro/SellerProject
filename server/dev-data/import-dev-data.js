@@ -2,12 +2,11 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 
 const Product = require("../model/productModel");
-const Seller = require("../model/sellerModel");
+// const Seller = require("../model/sellerModel");
+const Order = require("../model/orderModel");
 
 const dotenv = require("dotenv");
-
 dotenv.config({ path: "./config.env" });
-
 const DB = process.env.DATABASE_LOCAL;
 
 mongoose.connect(DB).then(() => {
@@ -20,35 +19,41 @@ mongoose.connect(DB).then(() => {
 //   fs.readFileSync(`${__dirname}/items.simple.json`, "utf-8")
 // );
 
-const sellers = JSON.parse(
-  fs.readFileSync(`${__dirname}/sellers.simple.json`, "utf-8")
-);
+// const sellers = JSON.parse(
+//   fs.readFileSync(`${__dirname}/sellers.simple.json`, "utf-8")
+// );
 // console.log(sellers);
+
+const orders = JSON.parse(
+  fs.readFileSync(`${__dirname}/orders.simple.json`, "utf-8")
+);
+// console.log(orders);
 
 // IMPORT THE DATA INTO  DATABASE....
 
 const imporData = async () => {
   try {
     // await Product.create(products);
-    await Seller.create(sellers);
-    // console.log("Data successfully loaded");
+    // await Seller.create(sellers);
+    await Order.create(orders);
+    console.log("Data successfully loaded");
   } catch (err) {
     console.log(err);
   }
   process.exit();
 };
 
-const deleteProduct = async () => {
-  // console.log("Deleting data...");
-  try {
-    // await Product.deleteMany();
-    await Seller.deleteMany();
-    // console.log("Data successfully deleted");
-  } catch (err) {
-    console.log(err);
-  }
-  process.exit();
-};
+// const deleteProduct = async () => {
+//   // console.log("Deleting data...");
+//   try {
+//     // await Product.deleteMany();
+//     await Seller.deleteMany();
+//     // console.log("Data successfully deleted");
+//   } catch (err) {
+//     console.log(err);
+//   }
+//   process.exit();
+// };
 
 if (process.argv[2] == "--import") {
   imporData();
@@ -56,4 +61,4 @@ if (process.argv[2] == "--import") {
   deleteProduct();
 }
 
-// console.log(process.argv);
+console.log(process.argv);

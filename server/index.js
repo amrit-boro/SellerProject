@@ -15,6 +15,7 @@ const userRouter = require("./router/userRouter");
 const itemRouter = require("./router/itemRouter");
 const sellerRouter = require("./router/sellerRouter");
 const getProductRouter = require("./router/getProduct");
+const getOrder = require("./router/getOrder");
 
 // Middleware
 app.use(helmet());
@@ -65,6 +66,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/product", itemRouter);
 app.use("/api/v1/seller", sellerRouter);
 app.use("/api/v1/getAllproducts", getProductRouter);
+app.use("/api/v1/order", getOrder);
 
 // Catch-all 404 route (keep this at the very bottom)
 // app.all("*", (req, res) => {
