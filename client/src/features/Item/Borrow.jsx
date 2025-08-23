@@ -12,6 +12,7 @@ function Borrow() {
   const x = location.state;
   console.log(x);
   const {
+    description,
     images,
     itemName,
     sellerProfilePic,
@@ -31,6 +32,7 @@ function Borrow() {
 
   const onSubmit = (data) => {
     console.log(data);
+    console.log("Item id: ", id);
     navigate("/");
   };
   function handleToggle() {
@@ -68,9 +70,35 @@ function Borrow() {
             <h2>{itemName}</h2>
           </span>
           <div
-            style={{ marginTop: "3px", fontSize: "20px", fontWeight: "bold" }}
+            style={{
+              marginTop: "3px",
+              fontSize: "20px",
+              display: "flex",
+              flexDirection: "column",
+              padding: "12px",
+              borderLeft: "5px solid #ffcc00",
+              borderRadius: "10px",
+              backgroundColor: "#ffffff",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)", // soft shadow/ 👈 shorthand for width + style + color
+            }}
           >
-            <span>
+            <span
+              style={{
+                fontSize: "16px",
+                color: "#444", // softer than black
+                lineHeight: "1.5", // improves readability
+                textAlign: "center",
+              }}
+            >
+              {description}
+            </span>
+            <span
+              style={{
+                textAlign: "center",
+                marginTop: "10px",
+                fontWeight: "bold",
+              }}
+            >
               Rs: <span style={{ color: "green" }}>{price} ₹</span>
             </span>
           </div>
